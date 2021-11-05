@@ -4,12 +4,32 @@ public class Contact {
 
     private String name;
     private String lastName;
+    private String profession;
+    private String email;
     private int phoneNumber;
     private String address;
 
-    public Contact(String name, String lastName, int phoneNumber, String address) {
+    public String getProfession() {
+        return profession;
+    }
+
+    public void setProfession(String profession) {
+        this.profession = profession;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Contact(String name, String lastName, String profession, String email, int phoneNumber, String address) {
         this.name = name;
         this.lastName = lastName;
+        this.profession = profession;
+        this.email = email;
         this.phoneNumber = phoneNumber;
         this.address = address;
     }

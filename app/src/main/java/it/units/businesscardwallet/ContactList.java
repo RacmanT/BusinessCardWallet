@@ -21,7 +21,7 @@ public class ContactList extends Fragment implements AdapterView.OnItemClickList
     private static final String ARG_PARAM2 = "param2";
 
     private ListView contactList;
-    private Contact[] contacts = {new Contact("Eren", "Jaeger", 232134212, "Paradise Island")};
+    private Contact[] contacts = {new Contact("Eren", "Jaeger", "Attack Titan", "singekyno@kyogin.su", 212212, "Paradise Island")};
 
 
     private String mParam1;

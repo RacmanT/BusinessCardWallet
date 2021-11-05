@@ -7,58 +7,42 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MyBusinessCard#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class MyBusinessCard extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private Contact myContact = new Contact("Patrick", "Bateman", "Vice President", "patrick.bateman@company.com", 343988666, "55 West 81st Street, Upper West Side");
 
     public MyBusinessCard() {
-        // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MyBusinessCard.
-     */
-    // TODO: Rename and change types and number of parameters
+
+/*
     public static MyBusinessCard newInstance(String param1, String param2) {
         MyBusinessCard fragment = new MyBusinessCard();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
+*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_business_card, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_my_business_card, container, false);
+        ((TextView) view.findViewById(R.id.first_name)).setText(myContact.getName());
+        ((TextView) view.findViewById(R.id.last_name)).setText(myContact.getLastName());
+        ((TextView) view.findViewById(R.id.phone_number)).setText(String.valueOf(myContact.getPhoneNumber()));
+        ((TextView) view.findViewById(R.id.email_address)).setText(myContact.getEmail());
+        ((TextView) view.findViewById(R.id.address)).setText(myContact.getAddress());
+
+        return view;
     }
 }
