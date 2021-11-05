@@ -48,30 +48,31 @@ public class MainActivity extends AppCompatActivity {
         public void onTabReselected(TabLayout.Tab tab) {
         }
     };
-    private final ViewPager2.OnPageChangeCallback onPageChangeCallback =  new ViewPager2.OnPageChangeCallback() {
+    private final ViewPager2.OnPageChangeCallback onPageChangeCallback = new ViewPager2.OnPageChangeCallback() {
         @Override
         public void onPageSelected(int position) {
             super.onPageSelected(position);
             tabLayout.selectTab(tabLayout.getTabAt(position));
         }
     };
-}
 
-class FragmentAdapter extends FragmentStateAdapter {
-    public FragmentAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
-        super(fragmentManager, lifecycle);
-    }
-    @NonNull
-    @Override
-    public Fragment createFragment(int position) {
-        if (position == 1) {
+    private class FragmentAdapter extends FragmentStateAdapter {
+        public FragmentAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+            super(fragmentManager, lifecycle);
+        }
+
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+            if (position == 1) {
+                return new ContactList();
+            }
             return new MyBusinessCard();
         }
-        return new MyBusinessCard();
-    }
 
-    @Override
-    public int getItemCount() {
-        return 2;
+        @Override
+        public int getItemCount() {
+            return 2;
+        }
     }
 }
