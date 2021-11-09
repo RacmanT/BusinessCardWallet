@@ -47,6 +47,8 @@ public class ContactList extends Fragment {
         return inflater.inflate(R.layout.fragment_contact_list, container, false);
     }
 
+
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -84,9 +86,7 @@ class ContactAdapter extends ArrayAdapter<Contact> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_contact_row, parent, false);
         }
         TextView viewName = convertView.findViewById(R.id.row_name);
-        TextView viewLastName = convertView.findViewById(R.id.row_last_name);
-        viewName.setText(contact.getName());
-        viewLastName.setText(contact.getLastName());
+        viewName.setText(contact.getName() + " " + contact.getLastName());
        /* convertView.setOnClickListener(v -> {
                 Intent intent = new Intent(v.getContext(), ContactInfoActivity.class);
                 intent.putExtra("contact", )

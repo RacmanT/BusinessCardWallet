@@ -3,21 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <item android:id="@+id/action_share"
+    <item
+        android:id="@+id/action_add"
+        android:icon="@drawable/ic_baseline_qr_code_scanner_24"
+        android:title="@string/add"
+        app:showAsAction="ifRoom" />
+
+
+    <item
+        android:id="@+id/action_share"
+        android:icon="@drawable/ic_baseline_share_24"
+        android:iconTint="@color/material_on_primary_emphasis_medium"
         android:title="@string/share"
-        app:showAsAction="ifRoom"
-        android:icon="@android:drawable/ic_menu_share"
-        android:iconTint="@color/material_on_primary_emphasis_medium"/>
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_print"
+        android:icon="@drawable/ic_baseline_print_white_24"
         android:title="@string/print"
-        app:showAsAction="never"
-        android:icon="@android:drawable/ic_dialog_info"/>
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_settings"
-        android:icon="@android:drawable/ic_menu_preferences"
+        android:icon="@drawable/ic_baseline_settings_24"
         android:title="@string/settings"
         app:showAsAction="never" />
 </menu>

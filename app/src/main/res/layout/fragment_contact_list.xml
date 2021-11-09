@@ -11,5 +11,8 @@
         android:layout_width="409dp"
         android:layout_height="729dp"
         android:id="@+id/contact_list"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+
         />
 </LinearLayout>

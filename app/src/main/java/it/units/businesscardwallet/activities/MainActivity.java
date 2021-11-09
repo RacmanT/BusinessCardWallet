@@ -9,9 +9,13 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
+import android.view.Window;
 
 import com.google.android.material.tabs.TabLayout;
+
+import java.lang.reflect.Method;
 
 import it.units.businesscardwallet.fragments.ContactList;
 import it.units.businesscardwallet.R;
@@ -29,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         tabLayout = findViewById(R.id.tab_layout);
         viewPager2 = findViewById(R.id.view_pager_2);
 
@@ -43,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager2.registerOnPageChangeCallback(onPageChangeCallback);
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
