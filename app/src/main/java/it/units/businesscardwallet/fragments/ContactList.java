@@ -1,15 +1,14 @@
-package it.units.businesscardwallet;
+package it.units.businesscardwallet.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,19 +16,18 @@ import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 
+import it.units.businesscardwallet.R;
+import it.units.businesscardwallet.activities.ContactInfoActivity;
+import it.units.businesscardwallet.entities.Contact;
 
-public class ContactList extends Fragment  {
 
+public class ContactList extends Fragment {
 
-
-    private ListView contactList;
-    private ArrayList<Contact> contacts = new ArrayList<>();
-
+    private final ArrayList<Contact> contacts = new ArrayList<>();
 
     public ContactList() {
         // Required empty public constructor
     }
-
 
     public static ContactList newInstance(String param1, String param2) {
         ContactList fragment = new ContactList();
@@ -60,12 +58,15 @@ public class ContactList extends Fragment  {
         ListView listView = view.findViewById(R.id.contact_list);
         ContactAdapter adapter = new ContactAdapter(getActivity(), contacts);
         listView.setAdapter(adapter);
+//        listView.setOnItemClickListener((parent, view1, position, id) -> getParentFragmentManager().beginTransaction().replace(R.id.contact_list, new ContactInfo()).addToBackStack(null).commit());
+        listView.setOnItemClickListener((parent, view1, position, id) ->
+                startActivity(new Intent(getActivity(), ContactInfoActivity.class).putExtra("contact", contacts.get(position)))
+        );
+        /*listView.setOnItemClickListener((parent, view1, position, id) -> {
+            getParentFragmentManager().beginTransaction().replace(R.id.view_pager_2, new MyBusinessCard()).addToBackStack(null).commit();
+        });*/
+
     }
-
-
-
-
-
 }
 
 class ContactAdapter extends ArrayAdapter<Contact> {
@@ -75,18 +76,25 @@ class ContactAdapter extends ArrayAdapter<Contact> {
     }
 
 
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Contact contact = getItem(position);
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_contact_row, parent, false);
         }
-        TextView viewName =  convertView.findViewById(R.id.row_name);
-        TextView viewLastName =  convertView.findViewById(R.id.row_last_name);
+        TextView viewName = convertView.findViewById(R.id.row_name);
+        TextView viewLastName = convertView.findViewById(R.id.row_last_name);
         viewName.setText(contact.getName());
         viewLastName.setText(contact.getLastName());
+       /* convertView.setOnClickListener(v -> {
+                Intent intent = new Intent(v.getContext(), ContactInfoActivity.class);
+                intent.putExtra("contact", )
+                v.getContext().startActivity(intent); }
+                );*/
 
-        convertView.setOnClickListener(v -> Toast.makeText(v.getContext(), viewName.getText().toString(), Toast.LENGTH_SHORT).show());
+
+
         return convertView;
 
     }

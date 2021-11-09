@@ -1,4 +1,4 @@
-package it.units.businesscardwallet;
+package it.units.businesscardwallet.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,13 +9,20 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
+import android.view.Menu;
 
 import com.google.android.material.tabs.TabLayout;
+
+import it.units.businesscardwallet.fragments.ContactList;
+import it.units.businesscardwallet.R;
+import it.units.businesscardwallet.fragments.BusinessCard;
+import it.units.businesscardwallet.entities.Contact;
 
 public class MainActivity extends AppCompatActivity {
 
     private ViewPager2 viewPager2;
     private TabLayout tabLayout;
+    private Contact myContact;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tab_layout);
         viewPager2 = findViewById(R.id.view_pager_2);
 
+        //TODO: fetch with database
+        myContact = new Contact("Patrick", "Bateman", "Vice President", "patrick.bateman@company.com", 343988666, "55 West 81st Street, Upper West Side");
+
         FragmentManager fm = getSupportFragmentManager();
         FragmentAdapter adapter = new FragmentAdapter(fm, getLifecycle());
         viewPager2.setAdapter(adapter);
@@ -32,6 +42,12 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(onTabSelectedListener);
         viewPager2.registerOnPageChangeCallback(onPageChangeCallback);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
     }
 
     private final TabLayout.OnTabSelectedListener onTabSelectedListener = new TabLayout.OnTabSelectedListener() {
@@ -48,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         public void onTabReselected(TabLayout.Tab tab) {
         }
     };
+
     private final ViewPager2.OnPageChangeCallback onPageChangeCallback = new ViewPager2.OnPageChangeCallback() {
         @Override
         public void onPageSelected(int position) {
@@ -67,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
             if (position == 1) {
                 return new ContactList();
             }
-            return new MyBusinessCard();
+            return BusinessCard.newInstance(myContact);
         }
 
         @Override

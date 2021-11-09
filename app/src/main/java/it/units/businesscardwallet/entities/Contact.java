@@ -1,6 +1,9 @@
-package it.units.businesscardwallet;
+package it.units.businesscardwallet.entities;
 
-public class Contact {
+
+import java.io.Serializable;
+
+public class Contact implements Serializable {
 
     private String name;
     private String lastName;
@@ -8,6 +11,7 @@ public class Contact {
     private String email;
     private int phoneNumber;
     private String address;
+
 
     public String getProfession() {
         return profession;
@@ -65,4 +69,6 @@ public class Contact {
     public void setAddress(String address) {
         this.address = address;
     }
+
+
 }

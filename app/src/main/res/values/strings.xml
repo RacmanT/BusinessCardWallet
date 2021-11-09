@@ -1,16 +1,20 @@
 <resources>
     <string name="app_name">Business Card Wallet</string>
 
-    <string name="first_name">Patrick</string>
-    <string name="last_name">Bateman</string>
-    <string name="profession">Vice President</string>
-    <string name="phone_number">3439888666</string>
-    <string name="email_address">patrick.bateman@company.com</string>
+
     <string name="address">55 West 81st Street, Upper West Side</string>
     <string name="qr_description">QR Code associated with the user\'s business card</string>
     <string name="editButton">Edit</string>
     <string name="home">Home</string>
     <string name="contacts">Contacts</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
+
+
+    <string name="settings">Settings</string>
+    <string name="share">Share</string>
+    <string name="print">Print</string>
+
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="delete">Delete</string>
 </resources>

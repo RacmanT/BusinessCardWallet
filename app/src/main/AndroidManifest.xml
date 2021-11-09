@@ -10,7 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BusinessCardWallet">
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.ContactInfoActivity"
+            android:exported="true" />
+            <!--<meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".MainActivity" />-->
+
+        <activity
+            android:name=".activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
