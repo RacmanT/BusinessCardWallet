@@ -13,6 +13,9 @@
         android:id="@+id/contact_list"
         android:divider="@null"
         android:dividerHeight="0dp"
-
         />
+        <!--android:divider="@android:color/transparent"
+        android:dividerHeight="5dp"-->
+
+
 </LinearLayout>
