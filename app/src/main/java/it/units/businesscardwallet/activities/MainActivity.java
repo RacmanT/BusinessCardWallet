@@ -8,12 +8,16 @@ import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.Window;
 
 import com.google.android.material.tabs.TabLayout;
+import com.google.zxing.integration.android.IntentIntegrator;
 
 import java.lang.reflect.Method;
 
@@ -24,6 +28,9 @@ import it.units.businesscardwallet.entities.Contact;
 
 public class MainActivity extends AppCompatActivity {
 
+
+    //https://stackoverflow.com/questions/55280032/how-to-update-document-in-firestore
+
     private ViewPager2 viewPager2;
     private TabLayout tabLayout;
     private Contact myContact;
@@ -32,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         tabLayout = findViewById(R.id.tab_layout);
         viewPager2 = findViewById(R.id.view_pager_2);
@@ -54,6 +60,27 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        switch (id){
+            case R.id.action_add:
+                // TODO add qr code scanner
+                new IntentIntegrator(this).initiateScan();
+                return true;
+            case R.id.action_print:
+                return true;
+            case R.id.action_settings:
+                return true;
+            case R.id.action_share:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+
     }
 
     private final TabLayout.OnTabSelectedListener onTabSelectedListener = new TabLayout.OnTabSelectedListener() {
@@ -98,4 +125,6 @@ public class MainActivity extends AppCompatActivity {
             return 2;
         }
     }
+
+
 }
