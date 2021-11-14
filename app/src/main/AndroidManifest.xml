@@ -9,15 +9,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BusinessCardWallet">
+
         <activity
             android:name=".activities.ContactInfoActivity"
             android:exported="true" />
             <!--<meta-data
             android:name="android.support.PARENT_ACTIVITY"
             android:value=".MainActivity" />-->
-
+        <activity
+            android:name=".activities.AnyOrientationCaptureActivity"
+            android:exported="true" />
+        <activity
+            android:name=".activities.CustomScannerActivity"
+            android:exported="true" />
+        <!--TODO check if hardware acceleration is really needed for scan -->
         <activity
             android:name=".activities.MainActivity"
+            android:hardwareAccelerated="true"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

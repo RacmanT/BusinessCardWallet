@@ -1,37 +1,31 @@
 package it.units.businesscardwallet.fragments;
 
-import static android.graphics.Color.BLACK;
-import static android.graphics.Color.WHITE;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+
 import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
-import com.google.zxing.EncodeHintType;
-import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
-import org.json.JSONObject;
-
-import java.util.Collections;
-import java.util.stream.IntStream;
+import java.security.KeyFactory;
+import java.security.PrivateKey;
+import java.security.Signature;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.Base64;
 
 import it.units.businesscardwallet.R;
 import it.units.businesscardwallet.entities.Contact;
+import it.units.businesscardwallet.utils.AESHelper;
 
 
 public class BusinessCard extends Fragment {
@@ -39,7 +33,7 @@ public class BusinessCard extends Fragment {
 
     private static final String ARG_PARAM_CONTACT = "ARG_PARAM_CONTACT";
 
-    private Contact contact; //= new Contact("Patrick", "Bateman", "Vice President", "patrick.bateman@company.com", 343988666, "55 West 81st Street, Upper West Side");
+    private Contact contact;
 
     public BusinessCard() {
     }
@@ -77,18 +71,23 @@ public class BusinessCard extends Fragment {
             int height = view.findViewById(R.id.qr_code).getHeight();
 
             String json = new Gson().toJson(contact);
+            String encryptedJson = AESHelper.encrypt(json);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-            Bitmap bitmap = barcodeEncoder.encodeBitmap(json, BarcodeFormat.QR_CODE, 300, 300);
+            Bitmap bitmap = barcodeEncoder.encodeBitmap(encryptedJson, BarcodeFormat.QR_CODE, 300, 300);
 
            // Bitmap bitmap = encodeAsBitmap(this.contact, 300, 300);
 
             ((ImageView) view.findViewById(R.id.qr_code)).setImageBitmap(bitmap);
         } catch (WriterException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return view;
     }
+
+
 
     // https://stackoverflow.com/questions/28232116/android-using-zxing-generate-qr-code
    /* @Nullable
@@ -101,7 +100,7 @@ public class BusinessCard extends Fragment {
                                 .map(w -> bitMatrix.get(w, h) ? Color.BLACK : Color.WHITE)).toArray(),
                 width, height, Bitmap.Config.ARGB_8888);
 
-        *//*
+
         BitMatrix result;
         result = new MultiFormatWriter().encode(json, BarcodeFormat.QR_CODE, 300, 300, null); //500 500
 

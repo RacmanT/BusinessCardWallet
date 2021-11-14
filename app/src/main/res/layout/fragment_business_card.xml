@@ -121,7 +121,8 @@
         app:layout_constraintEnd_toStartOf="@+id/phone_number"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/phone_number"
-        app:srcCompat="@drawable/ic_baseline_phone_24" />
+        app:srcCompat="@drawable/ic_baseline_phone_24"
+        android:contentDescription="@string/phone_icon" />
 
     <ImageView
         android:id="@+id/imageView2"
@@ -133,7 +134,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/email_address"
         app:srcCompat="@drawable/ic_baseline_mail_outline_24"
-        tools:srcCompat="@drawable/ic_baseline_mail_outline_24" />
+        tools:srcCompat="@drawable/ic_baseline_mail_outline_24"
+        android:contentDescription="@string/email_icon" />
 
     <ImageView
         android:id="@+id/imageView3"
@@ -145,6 +147,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/address"
         app:srcCompat="@drawable/ic_baseline_location_on_24"
-        tools:srcCompat="@drawable/ic_baseline_location_on_24" />
+        tools:srcCompat="@drawable/ic_baseline_location_on_24"
+        android:contentDescription="@string/location_icon" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

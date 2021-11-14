@@ -1,30 +1,36 @@
 package it.units.businesscardwallet.activities;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
+import androidx.print.PrintHelper;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.Window;
-
 import com.google.android.material.tabs.TabLayout;
-import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.gson.Gson;
+import com.google.zxing.client.android.Intents;
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
 
-import java.lang.reflect.Method;
-
-import it.units.businesscardwallet.fragments.ContactList;
 import it.units.businesscardwallet.R;
-import it.units.businesscardwallet.fragments.BusinessCard;
 import it.units.businesscardwallet.entities.Contact;
+import it.units.businesscardwallet.fragments.BusinessCard;
+import it.units.businesscardwallet.fragments.ContactList;
+import it.units.businesscardwallet.utils.AESHelper;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -68,9 +74,17 @@ public class MainActivity extends AppCompatActivity {
         switch (id){
             case R.id.action_add:
                 // TODO add qr code scanner
-                new IntentIntegrator(this).initiateScan();
+                ScanOptions options = new ScanOptions();
+                /*options.setCaptureActivity(AnyOrientationCaptureActivity.class);
+                options.setDesiredBarcodeFormats(ScanOptions.QR_CODE);
+                options.setPrompt("Scan a Business Card QR Code");
+                options.setOrientationLocked(false);
+                options.setBeepEnabled(false);*/
+                options.setOrientationLocked(false).setCaptureActivity(CustomScannerActivity.class);
+                barcodeLauncher.launch(options);
                 return true;
             case R.id.action_print:
+                doPhotoPrint();
                 return true;
             case R.id.action_settings:
                 return true;
@@ -82,6 +96,39 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+    private final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(new ScanContract(),
+            result -> {
+                if(result.getContents() == null) {
+                    Intent originalIntent = result.getOriginalIntent();
+                    if (originalIntent == null) {
+                        Log.d("MainActivity", "Cancelled scan");
+                        Toast.makeText(MainActivity.this, "Cancelled", Toast.LENGTH_LONG).show();
+                    } else if(originalIntent.hasExtra(Intents.Scan.MISSING_CAMERA_PERMISSION)) {
+                        Log.d("MainActivity", "Cancelled scan due to missing camera permission");
+                        Toast.makeText(MainActivity.this, "Cancelled due to missing camera permission", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+
+                    try {
+                        String decryptedData = AESHelper.decrypt(result.getContents());
+                        Log.i("KEY", "decryptedData is    " + decryptedData);
+                        Contact scannedContact = new Gson().fromJson(decryptedData, Contact.class);
+                        startActivity(new Intent(MainActivity.this, ContactInfoActivity.class).putExtra("contact", scannedContact));
+                    } catch (Exception e) {
+                        Toast.makeText(MainActivity.this, "Invalid QR", Toast.LENGTH_LONG).show();
+                    }
+                }});
+
+
+    // https://developer.android.com/training/printing/photos
+    private void doPhotoPrint() {
+        PrintHelper photoPrinter = new PrintHelper(MainActivity.this);
+        photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.id.qr_code);
+        photoPrinter.printBitmap("qrCode.jpg - test print", bitmap);
+    }
+
 
     private final TabLayout.OnTabSelectedListener onTabSelectedListener = new TabLayout.OnTabSelectedListener() {
         @Override
@@ -125,6 +172,8 @@ public class MainActivity extends AppCompatActivity {
             return 2;
         }
     }
+
+
 
 
 }
