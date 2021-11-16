@@ -3,7 +3,6 @@ package it.units.businesscardwallet.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,18 +12,14 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.ListView;
-import android.widget.SearchView;
+import androidx.appcompat.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.stream.Collectors;
 
 import it.units.businesscardwallet.R;
 import it.units.businesscardwallet.activities.ContactInfoActivity;
@@ -75,7 +70,6 @@ public class ContactList extends Fragment {
 
         @Override
         public boolean onQueryTextChange(String newText) {
-            Log.i("TEST", String.valueOf(adapter.contactListFiltered.isEmpty()));
             adapter.getFilter().filter(newText);
             return false;
         }
@@ -117,19 +111,20 @@ public class ContactList extends Fragment {
 
 class ContactAdapter extends ArrayAdapter<Contact> {
 
-    private List<Contact> contactList;
-    protected List<Contact> contactListFiltered;
+    private final ArrayList<Contact> contacts;
+    private ArrayList<Contact> filteredContacts;
+    private Filter filter;
 
     public ContactAdapter(Context context, ArrayList<Contact> contacts) {
         super(context, 0, contacts);
-        contactList = contacts;
-        contactListFiltered = new ArrayList<>(contacts);
+        this.contacts = new ArrayList<>(contacts);
+        this.filteredContacts = new ArrayList<>(contacts);
+        this.filter = new ContactFilter();
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Contact contact = getItem(position);
-        //Contact contact = contactListFiltered.get(position);
+        Contact contact = filteredContacts.get(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_contact_row, parent, false);
@@ -138,47 +133,61 @@ class ContactAdapter extends ArrayAdapter<Contact> {
         String displayedName = contact.getName() + " " + contact.getLastName();
         viewName.setText(displayedName);
         return convertView;
-
     }
 
     @Override
-    public Filter getFilter() {
-        return new Filter() {
+    public Filter getFilter(){
+        if(filter == null){
+            filter = new ContactFilter();
+        }
+        return filter;
+    }
+
+    private class ContactFilter extends Filter {
 
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                Log.i("TEST", "constraint is " + constraint);
                 FilterResults results = new FilterResults();
+                String prefix = constraint.toString().toLowerCase();
 
+                if (prefix.length() == 0){
+                    ArrayList<Contact> list = new ArrayList<>(contacts);
+                    results.values = list;
+                    results.count = list.size();
+                }else{
+                    final ArrayList<Contact> list = new ArrayList<>(contacts);
+                    final ArrayList<Contact> nlist = new ArrayList<>();
 
-                        List<Contact> filteredResults = contactList.stream()
-                                .filter(contact -> contact.getName().toLowerCase(Locale.ROOT)
-                                        .startsWith(constraint.toString().toLowerCase(Locale.ROOT)))
-                                .collect(Collectors.toList());
-                        Log.i("TEST", "Inside adapter " + filteredResults.size());
+                    for (int i = 0; i<list.size(); i++){
+                        final Contact contact = list.get(i);
+                        final String value = contact.getName().toLowerCase();
 
-                        results.values = filteredResults;
-                        results.count = filteredResults.size();
-
-
+                        if(value.contains(prefix)){
+                            nlist.add(contact);
+                        }
+                        results.values = nlist;
+                        results.count = nlist.size();
+                    }
+                }
                 return results;
+
             }
 
             @SuppressWarnings("unchecked")
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                contactListFiltered = (List<Contact>) results.values;
-                //ContactAdapter.this.notifyDataSetChanged();
-                if(results.count > 0)
-                {
-                    notifyDataSetChanged();
-                }else{
+                filteredContacts = (ArrayList<Contact>)results.values;
+                notifyDataSetChanged();
+                clear();
+                int count = filteredContacts.size();
+                for(int i = 0; i<count; i++){
+                    add(filteredContacts.get(i));
                     notifyDataSetInvalidated();
                 }
 
             }
 
 
-        };
-    }
+        }
+
 }
