@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.SearchView;
 
 import it.units.businesscardwallet.R;
 import it.units.businesscardwallet.fragments.BusinessCard;
@@ -17,7 +18,6 @@ public class ContactInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_info);
 
-        setTitle("Contact Info");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Contact contact = (Contact) getIntent().getSerializableExtra("contact");
@@ -31,8 +31,10 @@ public class ContactInfoActivity extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home) {
             finish();
             return true;
-        }
+        } else {
         return super.onOptionsItemSelected(item);
+
+        }
     }
 
     @Override

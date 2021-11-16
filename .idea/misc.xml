@@ -14,9 +14,13 @@
         <entry key="app/src/main/res/layout/fragment_contact_info.xml" value="0.2" />
         <entry key="app/src/main/res/layout/fragment_contact_row.xml" value="0.2" />
         <entry key="app/src/main/res/layout/fragment_my_business_card.xml" value="0.276268115942029" />
+        <entry key="app/src/main/res/layout/settings_activity.xml" value="0.184375" />
+        <entry key="app/src/main/res/menu/business_card_menu.xml" value="0.12916666666666668" />
         <entry key="app/src/main/res/menu/contact_info_menu.xml" value="0.19635416666666666" />
         <entry key="app/src/main/res/menu/main_menu.xml" value="0.15104166666666666" />
         <entry key="app/src/main/res/menu/search_menu.xml" value="0.12916666666666668" />
+        <entry key="app/src/main/res/xml/preferences.xml" value="0.18489583333333334" />
+        <entry key="app/src/main/res/xml/root_preferences.xml" value="0.33" />
       </map>
     </option>
   </component>

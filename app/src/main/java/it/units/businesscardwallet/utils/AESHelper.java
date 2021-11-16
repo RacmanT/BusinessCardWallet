@@ -24,33 +24,23 @@ import it.units.businesscardwallet.BuildConfig;
 
 public class AESHelper {
 
-        private static final byte[] keyContent = Base64.getDecoder().decode(BuildConfig.APP_KEY);
-        private static final SecretKey secretKey = new SecretKeySpec(keyContent, 0, keyContent.length, "AES");
+    private static final String ALGORITHM = "AES";
+    private static final byte[] keyContent = Base64.getDecoder().decode(BuildConfig.APP_KEY);
+    private static final SecretKey secretKey = new SecretKeySpec(keyContent, 0, keyContent.length, "AES");
 
-        public static String encrypt(String plainText) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
-            Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-            byte[] encryptedBytes = cipher.doFinal(plainText.getBytes());
-            return Base64.getEncoder().encodeToString(encryptedBytes);
-        }
+    public static String encrypt(String plainText) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+        Cipher cipher = Cipher.getInstance(ALGORITHM);
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+        byte[] encryptedBytes = cipher.doFinal(plainText.getBytes());
+        return Base64.getEncoder().encodeToString(encryptedBytes);
+    }
 
     public static String decrypt(String encryptedText) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
-        Cipher cipher = Cipher.getInstance("AES");
+        Cipher cipher = Cipher.getInstance(ALGORITHM);
         cipher.init(Cipher.DECRYPT_MODE, secretKey);
         byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedText));
         return new String(decryptedBytes);
     }
 
-    /*public byte[] makeAes(byte[] rawMessage, int cipherMode) {
-        try {
-            Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(cipherMode, this.secretKey);
-            byte[] output = cipher.doFinal(rawMessage);
-            return output;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }*/
-    }
+}
 

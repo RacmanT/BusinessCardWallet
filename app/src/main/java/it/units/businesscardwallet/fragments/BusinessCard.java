@@ -1,27 +1,24 @@
 package it.units.businesscardwallet.fragments;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.print.PrintHelper;
 
 import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
-import com.google.zxing.WriterException;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
-
-import java.security.KeyFactory;
-import java.security.PrivateKey;
-import java.security.Signature;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.util.Base64;
 
 import it.units.businesscardwallet.R;
 import it.units.businesscardwallet.entities.Contact;
@@ -34,6 +31,8 @@ public class BusinessCard extends Fragment {
     private static final String ARG_PARAM_CONTACT = "ARG_PARAM_CONTACT";
 
     private Contact contact;
+    private Bitmap bitmap;
+    private final Gson gson = new Gson();
 
     public BusinessCard() {
     }
@@ -49,6 +48,8 @@ public class BusinessCard extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true); // TODO if you want fragment to have menu
+        // https://stackoverflow.com/questions/8308695/how-to-add-options-menu-to-fragment-in-android
         contact = (Contact) getArguments().getSerializable(ARG_PARAM_CONTACT); //https://stackoverflow.com/questions/17443081/fragment-initialization-with-complex-object
     }
 
@@ -63,23 +64,25 @@ public class BusinessCard extends Fragment {
         ((TextView) view.findViewById(R.id.phone_number)).setText(String.valueOf(this.contact.getPhoneNumber()));
         ((TextView) view.findViewById(R.id.email_address)).setText(this.contact.getEmail());
         ((TextView) view.findViewById(R.id.address)).setText(this.contact.getAddress());
+        ((Button) view.findViewById(R.id.buttonTest)).setOnClickListener(v -> {
+            PrintHelper photoPrinter = new PrintHelper(view.getContext());
+            photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
+//            Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.id.qr_code);
+            photoPrinter.printBitmap("qrCode.jpg - test print", bitmap);
+        });
 
 
         try {
-            // TODO check why width is zero
-            int width = ((ImageView)view.findViewById(R.id.qr_code)).getMeasuredWidth();
-            int height = view.findViewById(R.id.qr_code).getHeight();
-
-            String json = new Gson().toJson(contact);
+            String json = gson.toJson(this.contact);
             String encryptedJson = AESHelper.encrypt(json);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-            Bitmap bitmap = barcodeEncoder.encodeBitmap(encryptedJson, BarcodeFormat.QR_CODE, 300, 300);
 
-           // Bitmap bitmap = encodeAsBitmap(this.contact, 300, 300);
+            int width = (int) getResources().getDimension(R.dimen.qr_code_width);
+            int height = (int) getResources().getDimension(R.dimen.qr_code_height);
+            bitmap = barcodeEncoder.encodeBitmap(encryptedJson, BarcodeFormat.QR_CODE, width, height); // 300, 300
+            ImageView qrCode = view.findViewById(R.id.qr_code);
+            qrCode.setImageBitmap(bitmap);
 
-            ((ImageView) view.findViewById(R.id.qr_code)).setImageBitmap(bitmap);
-        } catch (WriterException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -87,33 +90,28 @@ public class BusinessCard extends Fragment {
         return view;
     }
 
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.business_card_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 
-
-    // https://stackoverflow.com/questions/28232116/android-using-zxing-generate-qr-code
-   /* @Nullable
-    private Bitmap encodeAsBitmap(Contact contact, int width, int height) throws WriterException {
-        String json = new Gson().toJson(contact);
-
-        final BitMatrix bitMatrix = new MultiFormatWriter().encode(json, BarcodeFormat.QR_CODE, width, height, Collections.singletonMap(EncodeHintType.CHARACTER_SET, "utf-8"));
-        return Bitmap.createBitmap(IntStream.range(0, width)
-                        .flatMap(h -> IntStream.range(0, height)
-                                .map(w -> bitMatrix.get(w, h) ? Color.BLACK : Color.WHITE)).toArray(),
-                width, height, Bitmap.Config.ARGB_8888);
-
-
-        BitMatrix result;
-        result = new MultiFormatWriter().encode(json, BarcodeFormat.QR_CODE, 300, 300, null); //500 500
-
-        int[] pixels = new int[result.getWidth() * result.getHeight()];
-        for (int y = 0; y < result.getHeight(); y++) {
-            int offset = y * result.getWidth();
-            for (int x = 0; x < result.getWidth(); x++) {
-                pixels[offset + x] = result.get(x, y) ? ContextCompat.getColor(getActivity(), R.color.black) : ContextCompat.getColor(getActivity(), R.color.white);
-            }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_print){
+            printQrCode();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
-        Bitmap bitmap = Bitmap.createBitmap(result.getWidth(), result.getHeight(), Bitmap.Config.ARGB_8888);
-        bitmap.setPixels(pixels, 0, result.getWidth(), 0, 0, result.getWidth(), result.getHeight());
-        return bitmap;*//*
+    }
 
-    }*/
+
+    // https://developer.android.com/training/printing/photos
+    private void printQrCode() {
+        PrintHelper photoPrinter = new PrintHelper(getActivity());
+        photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
+        photoPrinter.printBitmap("qrCode.jpg - test print", bitmap);
+    }
+
 }

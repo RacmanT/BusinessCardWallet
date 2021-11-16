@@ -82,8 +82,8 @@
 
     <ImageView
         android:id="@+id/qr_code"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
+        android:layout_width="@dimen/qr_code_width"
+        android:layout_height="@dimen/qr_code_height"
         android:layout_marginTop="16dp"
         android:contentDescription="@string/qr_description"
         app:layout_constraintEnd_toEndOf="parent"
@@ -92,8 +92,8 @@
         app:srcCompat="@color/black"
         tools:src="@tools:sample/avatars" />
 
-    <!--<Button
-        android:id="@+id/button"
+    <Button
+        android:id="@+id/buttonTest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/editButton"
@@ -101,7 +101,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/address" />-->
+        app:layout_constraintTop_toBottomOf="@+id/address" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier5"
@@ -112,7 +112,7 @@
         tools:layout_editor_absoluteY="16dp" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/phone_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -125,7 +125,7 @@
         android:contentDescription="@string/phone_icon" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/email_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_baseline_mail_outline_24"
@@ -138,7 +138,7 @@
         android:contentDescription="@string/email_icon" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/location_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_baseline_location_on_24"

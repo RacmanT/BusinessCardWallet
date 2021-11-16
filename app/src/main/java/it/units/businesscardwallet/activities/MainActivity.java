@@ -3,10 +3,12 @@ package it.units.businesscardwallet.activities;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -71,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        switch (id){
+        switch (id) {
             case R.id.action_add:
                 // TODO add qr code scanner
                 ScanOptions options = new ScanOptions();
@@ -83,12 +85,9 @@ public class MainActivity extends AppCompatActivity {
                 options.setOrientationLocked(false).setCaptureActivity(CustomScannerActivity.class);
                 barcodeLauncher.launch(options);
                 return true;
-            case R.id.action_print:
-                doPhotoPrint();
-                return true;
             case R.id.action_settings:
-                return true;
-            case R.id.action_share:
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -99,12 +98,12 @@ public class MainActivity extends AppCompatActivity {
 
     private final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(new ScanContract(),
             result -> {
-                if(result.getContents() == null) {
+                if (result.getContents() == null) {
                     Intent originalIntent = result.getOriginalIntent();
                     if (originalIntent == null) {
                         Log.d("MainActivity", "Cancelled scan");
                         Toast.makeText(MainActivity.this, "Cancelled", Toast.LENGTH_LONG).show();
-                    } else if(originalIntent.hasExtra(Intents.Scan.MISSING_CAMERA_PERMISSION)) {
+                    } else if (originalIntent.hasExtra(Intents.Scan.MISSING_CAMERA_PERMISSION)) {
                         Log.d("MainActivity", "Cancelled scan due to missing camera permission");
                         Toast.makeText(MainActivity.this, "Cancelled due to missing camera permission", Toast.LENGTH_LONG).show();
                     }
@@ -118,16 +117,8 @@ public class MainActivity extends AppCompatActivity {
                     } catch (Exception e) {
                         Toast.makeText(MainActivity.this, "Invalid QR", Toast.LENGTH_LONG).show();
                     }
-                }});
-
-
-    // https://developer.android.com/training/printing/photos
-    private void doPhotoPrint() {
-        PrintHelper photoPrinter = new PrintHelper(MainActivity.this);
-        photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.id.qr_code);
-        photoPrinter.printBitmap("qrCode.jpg - test print", bitmap);
-    }
+                }
+            });
 
 
     private final TabLayout.OnTabSelectedListener onTabSelectedListener = new TabLayout.OnTabSelectedListener() {
@@ -172,8 +163,5 @@ public class MainActivity extends AppCompatActivity {
             return 2;
         }
     }
-
-
-
 
 }
