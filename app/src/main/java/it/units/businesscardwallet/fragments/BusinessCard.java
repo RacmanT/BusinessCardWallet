@@ -8,7 +8,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -64,12 +63,6 @@ public class BusinessCard extends Fragment {
         ((TextView) view.findViewById(R.id.phone_number)).setText(String.valueOf(this.contact.getPhoneNumber()));
         ((TextView) view.findViewById(R.id.email_address)).setText(this.contact.getEmail());
         ((TextView) view.findViewById(R.id.address)).setText(this.contact.getAddress());
-        ((Button) view.findViewById(R.id.buttonTest)).setOnClickListener(v -> {
-            PrintHelper photoPrinter = new PrintHelper(view.getContext());
-            photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
-//            Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.id.qr_code);
-            photoPrinter.printBitmap("qrCode.jpg - test print", bitmap);
-        });
 
 
         try {
@@ -98,7 +91,7 @@ public class BusinessCard extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_print){
+        if (item.getItemId() == R.id.action_print) {
             printQrCode();
             return true;
         } else {
@@ -109,7 +102,7 @@ public class BusinessCard extends Fragment {
 
     // https://developer.android.com/training/printing/photos
     private void printQrCode() {
-        PrintHelper photoPrinter = new PrintHelper(getActivity());
+        PrintHelper photoPrinter = new PrintHelper(getActivity()); //requireActivity()
         photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
         photoPrinter.printBitmap("qrCode.jpg - test print", bitmap);
     }

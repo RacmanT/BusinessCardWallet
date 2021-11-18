@@ -1,0 +1,36 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory title="Business Card Info">
+
+        <EditTextPreference
+            app:dialogTitle="@string/edit_name"
+            app:key="edit_name"
+            app:persistent="true"
+            app:title="@string/name" />
+        <!--        app:defaultValue="Patrick"-->
+
+        <EditTextPreference
+            app:dialogTitle="@string/edit_last_name"
+            app:key="edit_last_name"
+            app:persistent="true"
+            app:title="@string/last_name" />
+
+        <EditTextPreference
+            app:dialogTitle="@string/edit_profession"
+            app:key="edit_profession"
+            app:persistent="true"
+            app:title="@string/Profession" />
+
+        <EditTextPreference
+            android:digits="0123456789"
+            android:inputType="number"
+            app:dialogTitle="@string/edit_phone"
+            app:key="edit_phone"
+            app:persistent="true"
+            app:title="@string/phone" />
+
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

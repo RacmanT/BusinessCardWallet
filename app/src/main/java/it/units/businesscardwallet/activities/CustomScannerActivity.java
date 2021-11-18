@@ -2,7 +2,6 @@ package it.units.businesscardwallet.activities;
 
 import android.app.Activity;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -13,8 +12,6 @@ import androidx.annotation.NonNull;
 import com.journeyapps.barcodescanner.CaptureManager;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
 import com.journeyapps.barcodescanner.ViewfinderView;
-
-import java.util.Random;
 
 import it.units.businesscardwallet.R;
 

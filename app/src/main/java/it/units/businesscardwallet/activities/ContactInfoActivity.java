@@ -1,15 +1,14 @@
 package it.units.businesscardwallet.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.SearchView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import it.units.businesscardwallet.R;
-import it.units.businesscardwallet.fragments.BusinessCard;
 import it.units.businesscardwallet.entities.Contact;
+import it.units.businesscardwallet.fragments.BusinessCard;
 
 public class ContactInfoActivity extends AppCompatActivity {
 

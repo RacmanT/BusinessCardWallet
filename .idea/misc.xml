@@ -9,8 +9,9 @@
         <entry key="app/src/main/res/drawable/ic_baseline_share_black_24.xml" value="0.16770833333333332" />
         <entry key="app/src/main/res/layout/activity_contact_info.xml" value="0.1609375" />
         <entry key="app/src/main/res/layout/activity_custom_scanner.xml" value="0.18489583333333334" />
+        <entry key="app/src/main/res/layout/activity_settings.xml" value="0.11927083333333334" />
         <entry key="app/src/main/res/layout/custom_barcode_scanner.xml" value="0.18489583333333334" />
-        <entry key="app/src/main/res/layout/fragment_business_card.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/fragment_business_card.xml" value="0.2" />
         <entry key="app/src/main/res/layout/fragment_contact_info.xml" value="0.2" />
         <entry key="app/src/main/res/layout/fragment_contact_row.xml" value="0.2" />
         <entry key="app/src/main/res/layout/fragment_my_business_card.xml" value="0.276268115942029" />
@@ -19,6 +20,9 @@
         <entry key="app/src/main/res/menu/contact_info_menu.xml" value="0.19635416666666666" />
         <entry key="app/src/main/res/menu/main_menu.xml" value="0.15104166666666666" />
         <entry key="app/src/main/res/menu/search_menu.xml" value="0.12916666666666668" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.14635416666666667" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.13541666666666666" />
+        <entry key="app/src/main/res/xml/edit_user_fragment.xml" value="0.18229166666666666" />
         <entry key="app/src/main/res/xml/preferences.xml" value="0.18489583333333334" />
         <entry key="app/src/main/res/xml/root_preferences.xml" value="0.33" />
       </map>

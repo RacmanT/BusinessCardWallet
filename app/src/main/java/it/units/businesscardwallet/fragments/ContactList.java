@@ -12,7 +12,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.ListView;
+
 import androidx.appcompat.widget.SearchView;
+
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,6 +22,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 import it.units.businesscardwallet.R;
 import it.units.businesscardwallet.activities.ContactInfoActivity;
@@ -28,7 +33,7 @@ import it.units.businesscardwallet.entities.Contact;
 
 public class ContactList extends Fragment {
 
-    private final ArrayList<Contact> contacts = new ArrayList<>();
+    private final List<Contact> contacts = new ArrayList<>();
     private ContactAdapter adapter;
 
     public ContactList() {
@@ -107,15 +112,14 @@ public class ContactList extends Fragment {
     }
 }
 
-// TODO check why is not working
 
 class ContactAdapter extends ArrayAdapter<Contact> {
 
-    private final ArrayList<Contact> contacts;
-    private ArrayList<Contact> filteredContacts;
+    private final List<Contact> contacts;
+    private List<Contact> filteredContacts;
     private Filter filter;
 
-    public ContactAdapter(Context context, ArrayList<Contact> contacts) {
+    public ContactAdapter(Context context, List<Contact> contacts) {
         super(context, 0, contacts);
         this.contacts = new ArrayList<>(contacts);
         this.filteredContacts = new ArrayList<>(contacts);
@@ -136,8 +140,8 @@ class ContactAdapter extends ArrayAdapter<Contact> {
     }
 
     @Override
-    public Filter getFilter(){
-        if(filter == null){
+    public Filter getFilter() {
+        if (filter == null) {
             filter = new ContactFilter();
         }
         return filter;
@@ -145,49 +149,38 @@ class ContactAdapter extends ArrayAdapter<Contact> {
 
     private class ContactFilter extends Filter {
 
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                FilterResults results = new FilterResults();
-                String prefix = constraint.toString().toLowerCase();
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults results = new FilterResults();
+            String prefix = constraint.toString().toLowerCase(Locale.ROOT);
 
-                if (prefix.length() == 0){
-                    ArrayList<Contact> list = new ArrayList<>(contacts);
-                    results.values = list;
-                    results.count = list.size();
-                }else{
-                    final ArrayList<Contact> list = new ArrayList<>(contacts);
-                    final ArrayList<Contact> nlist = new ArrayList<>();
+            if (prefix.length() == 0) {
+                results.values = contacts;
+                results.count = contacts.size();
+            } else {
+                final List<Contact> nlist = contacts.stream().filter(contact ->
+                        contact.getName().toLowerCase(Locale.ROOT).startsWith(prefix))
+                        .collect(Collectors.toList());
 
-                    for (int i = 0; i<list.size(); i++){
-                        final Contact contact = list.get(i);
-                        final String value = contact.getName().toLowerCase();
-
-                        if(value.contains(prefix)){
-                            nlist.add(contact);
-                        }
-                        results.values = nlist;
-                        results.count = nlist.size();
-                    }
-                }
-                return results;
-
+                results.values = nlist;
+                results.count = nlist.size();
             }
-
-            @SuppressWarnings("unchecked")
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                filteredContacts = (ArrayList<Contact>)results.values;
-                notifyDataSetChanged();
-                clear();
-                int count = filteredContacts.size();
-                for(int i = 0; i<count; i++){
-                    add(filteredContacts.get(i));
-                    notifyDataSetInvalidated();
-                }
-
-            }
-
-
+            return results;
         }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            filteredContacts = (List<Contact>) results.values;
+            notifyDataSetChanged();
+            clear();
+            filteredContacts.forEach(filteredContact -> {
+                add(filteredContact);
+                notifyDataSetInvalidated();
+            });
+        }
+
+
+    }
 
 }

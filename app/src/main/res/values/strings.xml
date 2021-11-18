@@ -24,25 +24,29 @@
     <string name="phone_icon">Phone icon</string>
     <string name="email_icon">Email icon</string>
     <string name="location_icon">Location icon</string>
-    <string name="switch_theme">Switch theme</string>
+    <string name="dark_theme">Dark theme</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_contact_info">Contact Info</string>
 
 
-    <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
 
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <!-- Settings Preferences -->
     <string name="about">About</string>
-    <string name="edit_profile">Edit Profile</string>
+    <string name="name">Name</string>
+    <string name="last_name">Last name</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="edit_name">Edit name</string>
+    <string name="edit_last_name">Edit last name</string>
+    <string name="edit_account">Edit account</string>
+    <string name="edit_phone">Edit phone</string>
+    <string name="phone">Phone</string>
+    <string name="edit_profession">Edit profession</string>
+    <string name="Profession">Profession</string>
+    <string name="appearence">Appearance</string>
+    <string name="about_us">About us</string>
+    <string name="language">Language</string>
+    <string name="version">Version</string>
+    <string name="profile">Profile</string>
+    <string name="delete_account">Delete account</string>
+    <string name="log_out">Log out</string>
 </resources>

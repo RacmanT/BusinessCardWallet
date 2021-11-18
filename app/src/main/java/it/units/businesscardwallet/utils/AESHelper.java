@@ -25,19 +25,19 @@ import it.units.businesscardwallet.BuildConfig;
 public class AESHelper {
 
     private static final String ALGORITHM = "AES";
-    private static final byte[] keyContent = Base64.getDecoder().decode(BuildConfig.APP_KEY);
-    private static final SecretKey secretKey = new SecretKeySpec(keyContent, 0, keyContent.length, "AES");
+    private static final byte[] KEY_CONTENT = Base64.getDecoder().decode(BuildConfig.APP_KEY);
+    private static final SecretKey SECRET_KEY = new SecretKeySpec(KEY_CONTENT, 0, KEY_CONTENT.length, "AES");
 
     public static String encrypt(String plainText) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
         Cipher cipher = Cipher.getInstance(ALGORITHM);
-        cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+        cipher.init(Cipher.ENCRYPT_MODE, SECRET_KEY);
         byte[] encryptedBytes = cipher.doFinal(plainText.getBytes());
         return Base64.getEncoder().encodeToString(encryptedBytes);
     }
 
     public static String decrypt(String encryptedText) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
         Cipher cipher = Cipher.getInstance(ALGORITHM);
-        cipher.init(Cipher.DECRYPT_MODE, secretKey);
+        cipher.init(Cipher.DECRYPT_MODE, SECRET_KEY);
         byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedText));
         return new String(decryptedBytes);
     }
