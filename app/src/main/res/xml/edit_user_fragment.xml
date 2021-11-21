@@ -1,26 +1,26 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory title="Business Card Info">
+    <PreferenceCategory app:title="Business Card Info">
 
         <EditTextPreference
             app:dialogTitle="@string/edit_name"
             app:key="edit_name"
             app:persistent="true"
-            app:title="@string/name" />
+            app:title="@string/name_mandatory" />
         <!--        app:defaultValue="Patrick"-->
 
         <EditTextPreference
             app:dialogTitle="@string/edit_last_name"
             app:key="edit_last_name"
             app:persistent="true"
-            app:title="@string/last_name" />
+            app:title="@string/last_name_mandatory" />
 
         <EditTextPreference
             app:dialogTitle="@string/edit_profession"
             app:key="edit_profession"
             app:persistent="true"
-            app:title="@string/Profession" />
+            app:title="@string/profession" />
 
         <EditTextPreference
             android:digits="0123456789"

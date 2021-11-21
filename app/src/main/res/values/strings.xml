@@ -2,10 +2,10 @@
     <string name="app_name">Business Card Wallet</string>
 
     <!--    TODO https://guides.codepath.com/android/Storing-Secret-Keys-in-Android-->
-<!--    <string name="private_key">NntH+3XMYQJdlU8eo+lkbeBAskuCw6qdvhOkR10xP2U=</string>-->
+    <!--    <string name="private_key">NntH+3XMYQJdlU8eo+lkbeBAskuCw6qdvhOkR10xP2U=</string>-->
 
 
-    <string name="address">55 West 81st Street, Upper West Side</string>
+    <string name="address">Address</string>
     <string name="qr_description">QR Code associated with the user\'s business card</string>
     <string name="editButton">Edit</string>
     <string name="home">Home</string>
@@ -29,11 +29,10 @@
     <string name="title_activity_contact_info">Contact Info</string>
 
 
-
     <!-- Settings Preferences -->
     <string name="about">About</string>
-    <string name="name">Name</string>
-    <string name="last_name">Last name</string>
+    <string name="name_mandatory">Name*</string>
+    <string name="last_name_mandatory">Last name*</string>
     <string name="edit_profile">Edit profile</string>
     <string name="edit_name">Edit name</string>
     <string name="edit_last_name">Edit last name</string>
@@ -41,7 +40,8 @@
     <string name="edit_phone">Edit phone</string>
     <string name="phone">Phone</string>
     <string name="edit_profession">Edit profession</string>
-    <string name="Profession">Profession</string>
+    <string name="profession">Profession</string>
+    <string name="profession_mandatory">Profession*</string>
     <string name="appearence">Appearance</string>
     <string name="about_us">About us</string>
     <string name="language">Language</string>
@@ -49,4 +49,17 @@
     <string name="profile">Profile</string>
     <string name="delete_account">Delete account</string>
     <string name="log_out">Log out</string>
+    <string name="application_logo">Application logo</string>
+    <string name="password">Password</string>
+    <string name="password_mandatory">Password*</string>
+    <string name="registration_hint">Don\'t have an account? Click here</string>
+    <string name="log_in">Log in</string>
+    <string name="email_address">Email address</string>
+    <string name="email_address_mandatory">Email address*</string>
+    <string name="log_in_hint">"Already have an account? Log in "</string>
+    <string name="confirm_password_mandatory">Confirm password*</string>
+    <string name="register">Register</string>
+    <string name = "required_asterisk"><![CDATA[<font color=\'#cc0029\'>&nbsp*</font>]]></string>
+    <string name="institution">Institution</string>
+    <string name="welcome">Welcome!</string>
 </resources>

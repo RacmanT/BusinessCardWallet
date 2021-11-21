@@ -51,8 +51,8 @@
         android:id="@+id/phone_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:textSize="18sp"
+        android:layout_marginTop="32dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -63,7 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,7 +74,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:textSize="16sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -84,7 +84,7 @@
         android:id="@+id/qr_code"
         android:layout_width="@dimen/qr_code_width"
         android:layout_height="@dimen/qr_code_height"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:contentDescription="@string/qr_description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,16 +92,6 @@
         app:srcCompat="@color/black"
         tools:src="@tools:sample/avatars" />
 
-    <!--<Button
-        android:id="@+id/buttonTest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/editButton"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/address" />-->
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier5"
@@ -111,43 +101,44 @@
         app:constraint_referenced_ids="qr_code"
         tools:layout_editor_absoluteY="16dp" />
 
+
     <ImageView
         android:id="@+id/phone_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="32dp"
+        android:contentDescription="@string/phone_icon"
         android:src="@drawable/ic_baseline_phone_24"
         app:layout_constraintBottom_toBottomOf="@+id/phone_number"
-        app:layout_constraintEnd_toStartOf="@+id/phone_number"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/phone_number"
-        app:srcCompat="@drawable/ic_baseline_phone_24"
-        android:contentDescription="@string/phone_icon" />
+        app:srcCompat="@drawable/ic_baseline_phone_24" />
 
     <ImageView
         android:id="@+id/email_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:contentDescription="@string/email_icon"
         android:src="@drawable/ic_baseline_mail_outline_24"
         app:layout_constraintBottom_toBottomOf="@+id/email_address"
-        app:layout_constraintEnd_toStartOf="@+id/email_address"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/email_address"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/ic_baseline_mail_outline_24"
-        tools:srcCompat="@drawable/ic_baseline_mail_outline_24"
-        android:contentDescription="@string/email_icon" />
+        tools:srcCompat="@drawable/ic_baseline_mail_outline_24" />
 
     <ImageView
         android:id="@+id/location_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:contentDescription="@string/location_icon"
         android:src="@drawable/ic_baseline_location_on_24"
         app:layout_constraintBottom_toBottomOf="@+id/address"
-        app:layout_constraintEnd_toStartOf="@+id/address"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/address"
         app:srcCompat="@drawable/ic_baseline_location_on_24"
-        tools:srcCompat="@drawable/ic_baseline_location_on_24"
-        android:contentDescription="@string/location_icon" />
+        tools:srcCompat="@drawable/ic_baseline_location_on_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

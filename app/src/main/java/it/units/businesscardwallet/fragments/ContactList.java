@@ -98,7 +98,9 @@ public class ContactList extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         contacts.add(new Contact("Eren", "Jaeger", "Attack Titan", "singekyno@kyogin.su", 212212, "Paradise Island"));
-        contacts.add(new Contact("Mikasa", "Ackerman", "EREH support", "mikasa@kyogin.su", 212212, "Paradise Island"));
+        contacts.add(new Contact("Evelyn", "Richards", "EREH support", "mikasa@kyogin.su", 212212, "Paradise Island"));
+        contacts.add(new Contact("Luis", "Carruthers", "EREH support", "mikasa@kyogin.su", 212212, "Paradise Island"));
+        contacts.add(new Contact("Paul", "Owen", "EREH support", "mikasa@kyogin.su", 212212, "Paradise Island"));
 
         ListView listView = view.findViewById(R.id.contact_list);
         adapter = new ContactAdapter(getActivity(), contacts);

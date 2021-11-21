@@ -1,18 +1,13 @@
 package it.units.businesscardwallet.activities;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.ListView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceManager;
 
 import it.units.businesscardwallet.R;
 import it.units.businesscardwallet.fragments.SettingsFragment;
@@ -23,7 +18,7 @@ public class SettingsActivity extends AppCompatActivity implements PreferenceFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        this.getSharedPreferences("Mypref", 0).edit().clear().commit();
+        //this.getSharedPreferences("Mypref", 0).edit().clear().commit();
 
         if (savedInstanceState == null) {
             getSupportFragmentManager()
@@ -32,9 +27,8 @@ public class SettingsActivity extends AppCompatActivity implements PreferenceFra
                     .commit();
         }
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
 
 
 

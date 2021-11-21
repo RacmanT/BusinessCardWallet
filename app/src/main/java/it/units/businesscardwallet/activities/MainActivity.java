@@ -44,11 +44,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if(true){
+            Intent intent = new Intent(MainActivity.this, AuthenticationActivity.class );
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+
         tabLayout = findViewById(R.id.tab_layout);
         viewPager2 = findViewById(R.id.view_pager_2);
 
         //TODO: fetch with database
-        myContact = new Contact("Patrick", "Bateman", "Vice President", "patrick.bateman@company.com", 343988666, "55 West 81st Street, Upper West Side");
+        myContact = new Contact("Patrick", "Bateman", "Vice President", "patrick@bateman.com", 343988666, "81 Street, Upper West Side");
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentAdapter adapter = new FragmentAdapter(fm, getLifecycle());

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="LockedOrientationActivity"
-    package="it.units.businesscardwallet">
+    package="it.units.businesscardwallet"
+    tools:ignore="LockedOrientationActivity">
 
     <application
         android:allowBackup="true"
@@ -10,42 +10,42 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.BusinessCardWallet"
-        >
+        android:theme="@style/Theme.BusinessCardWallet">
+        <activity
+            android:name=".activities.AuthenticationActivity"
+            android:exported="true"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.SettingsActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:exported="true"
             android:label="@string/title_activity_settings"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden"
-        />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.ContactInfoActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:exported="true"
             android:label="@string/title_activity_contact_info"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden"/>
-
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.AnyOrientationCaptureActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:exported="true"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.CustomScannerActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:exported="true"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden"/> <!-- TODO check if hardware acceleration is really needed for scan -->
-
-
+            android:screenOrientation="portrait" /> <!-- TODO check if hardware acceleration is really needed for scan -->
         <activity
             android:name=".activities.MainActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:exported="true"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden">
-          <!-- TODO check if hardware acceleration is really needed for scan -->
+            android:screenOrientation="portrait">
+
+            <!-- TODO check if hardware acceleration is really needed for scan -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
