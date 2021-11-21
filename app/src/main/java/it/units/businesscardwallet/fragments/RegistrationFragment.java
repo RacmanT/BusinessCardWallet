@@ -1,11 +1,6 @@
 package it.units.businesscardwallet.fragments;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
-import android.os.Parcelable;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+
 import java.util.Arrays;
-import java.util.EnumMap;
 
 import it.units.businesscardwallet.R;
 
@@ -56,7 +52,6 @@ public class RegistrationFragment extends Fragment {
         registerButton = view.findViewById(R.id.buttonRegister);
 
 
-
         logInHint.setOnClickListener(v -> getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.authentication, new LoginFragment())
@@ -65,48 +60,59 @@ public class RegistrationFragment extends Fragment {
         registerButton.setOnClickListener(v -> {
 
 
-            if(isMissingValue(name, lastName, profession, emailAddress, password, confirmPassword)){
+            if (isMissingValue(name, lastName, profession, emailAddress, password, confirmPassword)) {
                 int missingValueColor = getContext().getColor(android.R.color.holo_red_light);
                 setMissingValueColorHint(missingValueColor, name, lastName, profession, emailAddress, password, confirmPassword);
                 return;
             }
 
-            if(phone.getText().toString().length() != 0 && !Patterns.PHONE.matcher(phone.getText().toString()).matches()){
+            if (name.getText().toString().length() != 0 && !name.getText().toString().matches("[a-zA-Z]+")) {
+                name.setError("Name not valid");
+                return;
+            }
+
+            if (lastName.getText().toString().length() != 0 && !lastName.getText().toString().matches("[a-zA-Z]+")) {
+                lastName.setError("Last name not valid");
+                return;
+            }
+
+            if (profession.getText().toString().length() != 0 && !profession.getText().toString().matches("[a-zA-Z]+")) {
+                profession.setError("Profession not valid");
+                return;
+            }
+
+            if (phone.getText().toString().length() != 0 && !Patterns.PHONE.matcher(phone.getText().toString()).matches()) {
                 phone.setError("Not a phone number");
                 return;
             }
 
-            if (!Patterns.EMAIL_ADDRESS.matcher(emailAddress.getText().toString()).matches()){
+            if (!Patterns.EMAIL_ADDRESS.matcher(emailAddress.getText().toString()).matches()) {
                 emailAddress.setError("Not an email address");
                 return;
             }
 
-            if (password.getText().toString().length() < 6){
+            if (password.getText().toString().length() < 6) {
                 password.setError("Password must have at least 6 characters");
                 return;
             }
 
-            if (!password.getText().toString().equals(confirmPassword.getText().toString())){
+            if (!password.getText().toString().equals(confirmPassword.getText().toString())) {
                 password.setError("Password not confirmed");
                 confirmPassword.setError("Password not confirmed");
                 return;
             }
 
-
-
-
-
-
-
+            
         });
 
         return view;
     }
 
 
-    private boolean isMissingValue(EditText... editTexts){
-        return Arrays.stream(editTexts).filter(editText -> name.getText().toString().isEmpty()).count() != 0;
+    private boolean isMissingValue(EditText... editTexts) {
+        return Arrays.stream(editTexts).anyMatch(editText -> name.getText().toString().isEmpty());
     }
+
     private void setMissingValueColorHint(int color, EditText... editTexts) {
         Arrays.stream(editTexts).filter(editText -> name.getText().toString().isEmpty())
                 .forEach(editText -> {
@@ -114,4 +120,6 @@ public class RegistrationFragment extends Fragment {
                     editText.setError(editText.getHint() + " cannot be empty");
                 });
     }
+
+
 }
