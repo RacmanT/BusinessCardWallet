@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "776532558216",
+    "project_id": "business-card-wallet-d3275",
+    "storage_bucket": "business-card-wallet-d3275.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:776532558216:android:650e5835a54378ad16ba3d",
+        "android_client_info": {
+          "package_name": "it.units.businesscardwallet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "776532558216-43h1hikgms57chn9gge88eiqgae314pq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXrIcF_q8gRfDPlpI52E24rpCOw5Wrp0I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "776532558216-43h1hikgms57chn9gge88eiqgae314pq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

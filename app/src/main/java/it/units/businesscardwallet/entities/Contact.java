@@ -12,6 +12,15 @@ public class Contact implements Serializable {
     private int phoneNumber;
     private String address;
 
+    public Contact(String name, String lastName, String profession,  String email, int phoneNumber, String address) {
+        this.name = name;
+        this.lastName = lastName;
+        this.profession = profession;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+    }
+
 
     public String getProfession() {
         return profession;
@@ -27,15 +36,6 @@ public class Contact implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public Contact(String name, String lastName, String profession, String email, int phoneNumber, String address) {
-        this.name = name;
-        this.lastName = lastName;
-        this.profession = profession;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
     }
 
     public String getName() {

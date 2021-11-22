@@ -1,5 +1,6 @@
 package it.units.businesscardwallet.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -11,9 +12,12 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.Arrays;
 
 import it.units.businesscardwallet.R;
+import it.units.businesscardwallet.activities.MainActivity;
 
 
 public class RegistrationFragment extends Fragment {
@@ -22,6 +26,7 @@ public class RegistrationFragment extends Fragment {
     EditText name, lastName, profession, address, institution, emailAddress, password, confirmPassword, phone;
     private TextView logInHint;
     private Button registerButton;
+    private FirebaseAuth mAuth;
 
     public RegistrationFragment() {
     }
@@ -30,6 +35,7 @@ public class RegistrationFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -102,7 +108,10 @@ public class RegistrationFragment extends Fragment {
                 return;
             }
 
-            
+            mAuth.createUserWithEmailAndPassword(emailAddress.getText().toString(), password.getText().toString())
+                    .addOnSuccessListener(authResult -> startActivity(new Intent(getContext(), MainActivity.class)));
+
+
         });
 
         return view;

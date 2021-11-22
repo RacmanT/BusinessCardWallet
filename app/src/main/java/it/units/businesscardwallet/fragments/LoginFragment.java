@@ -1,9 +1,12 @@
 package it.units.businesscardwallet.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +14,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
 import it.units.businesscardwallet.R;
+import it.units.businesscardwallet.activities.AuthenticationActivity;
+import it.units.businesscardwallet.activities.MainActivity;
 
 
 public class LoginFragment extends Fragment {
@@ -20,6 +30,7 @@ public class LoginFragment extends Fragment {
     private EditText emailAddress, password;
     private TextView registrationHint;
     private Button logIn;
+    private FirebaseAuth mAuth;
 
     public LoginFragment() {
     }
@@ -28,6 +39,7 @@ public class LoginFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -39,20 +51,31 @@ public class LoginFragment extends Fragment {
         registrationHint = view.findViewById(R.id.registration_hint);
         logIn = view.findViewById(R.id.buttonLogIn);
 
+
         registrationHint.setOnClickListener(v -> getActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.authentication, new RegistrationFragment())
                 .commit());
 
         logIn.setOnClickListener(v -> {
-            if (!isValidEmail(emailAddress.getText().toString())) {
+            String emailAddressContent = emailAddress.getText().toString();
+            String passwordContent = password.getText().toString();
+
+            if (!isValidEmail(emailAddressContent)) {
                 emailAddress.setError("Email address is not valid");
                 return;
             }
-            if (password.getText().length() == 0) {
+            if (passwordContent.length() == 0) {
                 password.setError("Password cannot be empty");
                 return;
             }
+
+            mAuth.signInWithEmailAndPassword(emailAddressContent, passwordContent)
+                    .addOnSuccessListener(authResult -> startActivity(new Intent(getContext(), MainActivity.class)))
+                    .addOnFailureListener(e -> {
+                        emailAddress.setError("Wrong credentials");
+                        password.setError("Wrong credentials");
+                    });
 
         });
 
