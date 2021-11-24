@@ -18,8 +18,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 import com.google.zxing.client.android.Intents;
 import com.journeyapps.barcodescanner.ScanContract;
@@ -30,6 +28,7 @@ import it.units.businesscardwallet.entities.Contact;
 import it.units.businesscardwallet.fragments.BusinessCard;
 import it.units.businesscardwallet.fragments.ContactList;
 import it.units.businesscardwallet.utils.AESHelper;
+import it.units.businesscardwallet.utils.DatabaseUtils;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -40,25 +39,38 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager2 viewPager2;
     private TabLayout tabLayout;
     private Contact myContact;
-    private FirebaseAuth mAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        DatabaseUtils.init();
 
         tabLayout = findViewById(R.id.tab_layout);
         viewPager2 = findViewById(R.id.view_pager_2);
 
-        //TODO: fetch with database
-        myContact = new Contact("Patrick", "Bateman", "Vice President", "patrick@bateman.com", 343988666, "81 Street, Upper West Side");
 
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentAdapter adapter = new FragmentAdapter(fm, getLifecycle());
-        viewPager2.setAdapter(adapter);
 
-        tabLayout.addOnTabSelectedListener(onTabSelectedListener);
-        viewPager2.registerOnPageChangeCallback(onPageChangeCallback);
+        if (DatabaseUtils.userIsNotLogged()) {
+            Intent intent = new Intent(MainActivity.this, AuthenticationActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
+
+
+        DatabaseUtils.userRef.get().addOnSuccessListener(documentSnapshot -> {
+            myContact = documentSnapshot.toObject(Contact.class);
+
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentAdapter adapter = new FragmentAdapter(fm, getLifecycle());
+
+            viewPager2.setAdapter(adapter);
+            tabLayout.addOnTabSelectedListener(onTabSelectedListener);
+            viewPager2.registerOnPageChangeCallback(onPageChangeCallback);
+        });
 
     }
 
@@ -66,14 +78,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-
-        if(user == null){
-            Intent intent = new Intent(MainActivity.this, AuthenticationActivity.class );
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        if (DatabaseUtils.userIsNotLogged()) {
+            Intent intent = new Intent(MainActivity.this, AuthenticationActivity.class);
             startActivity(intent);
+            finish();
+            return;
         }
+
     }
 
     @Override
@@ -126,6 +137,10 @@ public class MainActivity extends AppCompatActivity {
                         String decryptedData = AESHelper.decrypt(result.getContents());
                         Log.i("KEY", "decryptedData is    " + decryptedData);
                         Contact scannedContact = new Gson().fromJson(decryptedData, Contact.class);
+                        if (scannedContact.equals(myContact)){
+                            return;
+                        }
+                        DatabaseUtils.contactsRef.document(scannedContact.getEmail()).set(scannedContact);
                         startActivity(new Intent(MainActivity.this, ContactInfoActivity.class).putExtra("contact", scannedContact));
                     } catch (Exception e) {
                         Toast.makeText(MainActivity.this, "Invalid QR", Toast.LENGTH_LONG).show();
@@ -157,6 +172,8 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+
+
     private class FragmentAdapter extends FragmentStateAdapter {
         public FragmentAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
             super(fragmentManager, lifecycle);
@@ -176,5 +193,7 @@ public class MainActivity extends AppCompatActivity {
             return 2;
         }
     }
+
+
 
 }

@@ -1,7 +1,10 @@
 package it.units.businesscardwallet.entities;
 
 
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Contact implements Serializable {
 
@@ -9,10 +12,13 @@ public class Contact implements Serializable {
     private String lastName;
     private String profession;
     private String email;
-    private int phoneNumber;
+    private String phoneNumber;
     private String address;
 
-    public Contact(String name, String lastName, String profession,  String email, int phoneNumber, String address) {
+    public Contact() {
+    }
+
+    public Contact(String name, String lastName, String profession, String email, String phoneNumber, String address) {
         this.name = name;
         this.lastName = lastName;
         this.profession = profession;
@@ -54,11 +60,12 @@ public class Contact implements Serializable {
         this.lastName = lastName;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -71,4 +78,24 @@ public class Contact implements Serializable {
     }
 
 
+    @NonNull
+    @Override
+    public String toString() {
+        return name + " " + lastName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Contact contact = (Contact) o;
+        return name.equals(contact.name) && lastName.equals(contact.lastName) &&
+                profession.equals(contact.profession) && email.equals(contact.email) &&
+                Objects.equals(phoneNumber, contact.phoneNumber) && Objects.equals(address, contact.address);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, lastName, profession, email, phoneNumber, address);
+    }
 }

@@ -19,6 +19,8 @@ import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import org.w3c.dom.Text;
+
 import it.units.businesscardwallet.R;
 import it.units.businesscardwallet.entities.Contact;
 import it.units.businesscardwallet.utils.AESHelper;
@@ -32,6 +34,10 @@ public class BusinessCard extends Fragment {
     private Contact contact;
     private Bitmap bitmap;
     private final Gson gson = new Gson();
+
+    private View view;
+    private TextView name, lastName, profession, phone, emailAddress, address;
+    private ImageView phoneIcon, addressIcon, emailIcon;
 
     public BusinessCard() {
     }
@@ -56,13 +62,56 @@ public class BusinessCard extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_business_card, container, false);
-        ((TextView) view.findViewById(R.id.first_name)).setText(this.contact.getName());
-        ((TextView) view.findViewById(R.id.last_name)).setText(this.contact.getLastName());
-        ((TextView) view.findViewById(R.id.profession)).setText(this.contact.getProfession());
-        ((TextView) view.findViewById(R.id.phone_number)).setText(String.valueOf(this.contact.getPhoneNumber()));
-        ((TextView) view.findViewById(R.id.email_address)).setText(this.contact.getEmail());
-        ((TextView) view.findViewById(R.id.address)).setText(this.contact.getAddress());
+
+        // TODO https://stackoverflow.com/questions/25279715/android-how-to-add-icon-at-the-left-side-of-the-textview/25279726
+        view = inflater.inflate(R.layout.fragment_business_card, container, false);
+
+        name = view.findViewById(R.id.first_name);
+        name.setText(this.contact.getName());
+
+        lastName = view.findViewById(R.id.last_name);
+        lastName.setText(this.contact.getLastName());
+
+        profession = view.findViewById(R.id.profession);
+        profession.setText(this.contact.getProfession());
+
+        phone = view.findViewById(R.id.phone_number);
+        phoneIcon = view.findViewById(R.id.phone_icon);
+
+        if (this.contact.getPhoneNumber().isEmpty()) {
+            phone.setVisibility(View.GONE);
+            phoneIcon.setVisibility(View.GONE);
+        } else {
+            phone.setVisibility(View.VISIBLE);
+            phoneIcon.setVisibility(View.VISIBLE);
+            phone.setText(this.contact.getPhoneNumber());
+        }
+
+        emailAddress = view.findViewById(R.id.email_address);
+        emailIcon = view.findViewById(R.id.email_icon);
+
+
+        if (this.contact.getEmail().isEmpty()) {
+            emailAddress.setVisibility(View.GONE);
+            emailIcon.setVisibility(View.GONE);
+        } else {
+            emailAddress.setVisibility(View.VISIBLE);
+            emailIcon.setVisibility(View.VISIBLE);
+            emailAddress.setText(this.contact.getEmail());
+        }
+
+
+        address = view.findViewById(R.id.address);
+        addressIcon = view.findViewById(R.id.location_icon);
+
+        if (this.contact.getAddress().isEmpty()) {
+            address.setVisibility(View.GONE);
+            addressIcon.setVisibility(View.GONE);
+        } else {
+            address.setVisibility(View.VISIBLE);
+            addressIcon.setVisibility(View.VISIBLE);
+            address.setText(this.contact.getAddress());
+        }
 
 
         try {
@@ -106,5 +155,6 @@ public class BusinessCard extends Fragment {
         photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
         photoPrinter.printBitmap("qrCode.jpg - test print", bitmap);
     }
+
 
 }

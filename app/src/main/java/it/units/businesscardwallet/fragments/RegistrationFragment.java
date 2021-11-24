@@ -13,11 +13,14 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Arrays;
 
 import it.units.businesscardwallet.R;
 import it.units.businesscardwallet.activities.MainActivity;
+import it.units.businesscardwallet.entities.Contact;
 
 
 public class RegistrationFragment extends Fragment {
@@ -27,6 +30,9 @@ public class RegistrationFragment extends Fragment {
     private TextView logInHint;
     private Button registerButton;
     private FirebaseAuth mAuth;
+    FirebaseFirestore db;
+    Contact newUser;
+
 
     public RegistrationFragment() {
     }
@@ -36,6 +42,7 @@ public class RegistrationFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
     }
 
     @Override
@@ -108,8 +115,16 @@ public class RegistrationFragment extends Fragment {
                 return;
             }
 
+            newUser = new Contact(name.getText().toString(), lastName.getText().toString(), profession.getText().toString(), emailAddress.getText().toString(),
+                                    phone.getText().toString(), address.getText().toString());
+
             mAuth.createUserWithEmailAndPassword(emailAddress.getText().toString(), password.getText().toString())
-                    .addOnSuccessListener(authResult -> startActivity(new Intent(getContext(), MainActivity.class)));
+                    .addOnSuccessListener(authResult ->
+                            {
+                                db.collection("users").document(mAuth.getCurrentUser().getUid()).set(newUser);
+                                startActivity(new Intent(getContext(), MainActivity.class));
+                            }
+                    );
 
 
         });
