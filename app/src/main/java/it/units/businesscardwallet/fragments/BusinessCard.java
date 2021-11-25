@@ -1,7 +1,13 @@
 package it.units.businesscardwallet.fragments;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,8 +16,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.print.PrintHelper;
 
@@ -21,7 +29,12 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import org.w3c.dom.Text;
 
+import java.io.File;
+import java.io.FileOutputStream;
+
+import it.units.businesscardwallet.BuildConfig;
 import it.units.businesscardwallet.R;
+import it.units.businesscardwallet.activities.MainActivity;
 import it.units.businesscardwallet.entities.Contact;
 import it.units.businesscardwallet.utils.AESHelper;
 
@@ -138,14 +151,45 @@ public class BusinessCard extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_print) {
-            printQrCode();
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.action_print:
+                printQrCode();
+                break;
+            case R.id.action_share:
+                shareQrCode();
+                break;
         }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void shareQrCode() {
+        // https://stackoverflow.com/questions/48117511/exposed-beyond-app-through-clipdata-item-geturi
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
+
+        File file = new File(getContext().getCacheDir(), contact.getName() + contact.getLastName() + "QrCode.png");
+        file.setReadable(true, false);
+        try (FileOutputStream fOut = new FileOutputStream(file)) {
+
+            //Uri uri = FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID+".provider", file);
+
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
+            Uri fileUri = FileProvider.getUriForFile(getContext(), "it.units.businesscardwallet.provider", file);
+            final Intent intent = new Intent(android.content.Intent.ACTION_SEND)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    .putExtra(Intent.EXTRA_STREAM, fileUri)
+                    .setType("image/png");
+
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        file.deleteOnExit();
     }
 
 

@@ -99,11 +99,6 @@ public class CustomScannerActivity extends Activity implements
         }
     }
 
-    /*public void changeMaskColor(View view) {
-        Random rnd = new Random();
-        int color = Color.argb(100, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-        viewfinderView.setMaskColor(color);
-    }*/
 
     public void changeLaserVisibility(boolean visible) {
         viewfinderView.setLaserVisibility(visible);

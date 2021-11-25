@@ -7,8 +7,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class DatabaseUtils {
 
-    private static FirebaseAuth AUTH = FirebaseAuth.getInstance();
-    private static FirebaseFirestore DATABASE = FirebaseFirestore.getInstance();
+    public static FirebaseAuth AUTH = FirebaseAuth.getInstance();
+    public static FirebaseFirestore DATABASE = FirebaseFirestore.getInstance();
 
     public static  DocumentReference userRef;
     public static  CollectionReference contactsRef;

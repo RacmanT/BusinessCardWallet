@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+File needed in order to allow sharing the QR Code
+https://stackoverflow.com/questions/42516126/fileprovider-illegalargumentexception-failed-to-find-configured-root/42516202
+-->
+<paths>
+    <cache-path
+        name="cache"
+        path="." />
+</paths>

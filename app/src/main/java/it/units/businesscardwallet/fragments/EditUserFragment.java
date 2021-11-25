@@ -20,7 +20,7 @@ public class EditUserFragment extends PreferenceFragmentCompat {
         ((SettingsActivity) getActivity()).setActionBarTitle(getResources().getString(R.string.edit_profile));
         setPreferencesFromResource(R.xml.edit_user_fragment, rootKey);
         PreferenceManager.setDefaultValues(getContext(),R.xml.edit_user_fragment,false);
-        EditTextPreference name = (EditTextPreference) findPreference("edit_last_name");
+        EditTextPreference name = findPreference("edit_last_name");
         //name.setDefaultValue("Darko");
 
     }

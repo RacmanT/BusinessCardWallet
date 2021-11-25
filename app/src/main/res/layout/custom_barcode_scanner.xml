@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:background="@color/zxing_transparent"
-        android:text="@string/zxing_msg_default_status"
+        android:text="Scan a Business Card QR Code"
         android:textColor="@color/zxing_status_text"/>
 
 </merge>

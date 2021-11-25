@@ -2,6 +2,7 @@ package it.units.businesscardwallet.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,6 +17,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +33,7 @@ import it.units.businesscardwallet.utils.DatabaseUtils;
 
 public class ContactList extends Fragment {
 
-    private List<Contact> contacts;
+    private final List<Contact> contacts = new ArrayList<>();
     private ArrayAdapter<Contact> adapter;
     private ListView listView;
 
@@ -46,7 +52,6 @@ public class ContactList extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
-        contacts = new ArrayList<>();
     }
 
 
@@ -55,7 +60,6 @@ public class ContactList extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.search_menu, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        //searchItem.expandActionView();
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setQueryHint(getResources().getString(R.string.search));
         searchView.setOnQueryTextListener(onQueryTextListener);
@@ -75,10 +79,6 @@ public class ContactList extends Fragment {
         }
     };
 
-    /*@Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -92,22 +92,13 @@ public class ContactList extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         listView = view.findViewById(R.id.contact_list);
-
-        //collectionReference = db.collection("users").document(mAuth.getCurrentUser().getUid()).collection("contacts");
-        DatabaseUtils.contactsRef.get().addOnSuccessListener(queryDocumentSnapshots -> {
-            queryDocumentSnapshots.getDocuments().forEach(documentSnapshot -> contacts.add(documentSnapshot.toObject(Contact.class)));
-
-            adapter = new ArrayAdapter<>(view.getContext(), R.layout.fragment_contact_row, R.id.row_name, contacts);
-            listView.setAdapter(adapter);
-            listView.setOnItemClickListener((parent, view1, position, id) -> {
-                        Intent intent = new Intent(getActivity(), ContactInfoActivity.class);
-                        intent.putExtra("contact", contacts.get(position));
-                        startActivity(intent);
-                    }
-            );
-
-
-        });
+        listView.setOnItemClickListener((parent, view1, position, id) -> {
+                    Intent intent = new Intent(getActivity(), ContactInfoActivity.class);
+                    intent.putExtra("contact", contacts.get(position));
+                    startActivity(intent);
+                }
+        );
+        onResume();
 
     }
 
@@ -115,15 +106,11 @@ public class ContactList extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        DatabaseUtils.contactsRef.get().addOnSuccessListener(queryDocumentSnapshots ->
-                {
-                    contacts.clear();
-                    queryDocumentSnapshots.getDocumentChanges().forEach(documentChange -> contacts.add(documentChange.getDocument().toObject(Contact.class)));
-                    //adapter = new ArrayAdapter<>(getActivity(), R.layout.fragment_contact_row,R.id.row_name, contacts);
-                    //listView.setAdapter(adapter);
-                    adapter.clear();
-                    adapter.addAll(contacts);
-                    adapter.notifyDataSetChanged();
+        contacts.clear();
+        DatabaseUtils.contactsRef.get().addOnSuccessListener(queryDocumentSnapshots -> {
+                    queryDocumentSnapshots.getDocuments().forEach(doc -> contacts.add(doc.toObject(Contact.class)));
+                    adapter = new ArrayAdapter<>(getActivity(), R.layout.fragment_contact_row, R.id.row_name, contacts);
+                    listView.setAdapter(adapter);
                 }
         );
     }
