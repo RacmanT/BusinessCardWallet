@@ -13,7 +13,6 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Arrays;
@@ -45,6 +44,7 @@ public class RegistrationFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,6 +52,7 @@ public class RegistrationFragment extends Fragment {
 
         name = view.findViewById(R.id.editTextName);
 
+        // TODO add institution to contact
         lastName = view.findViewById(R.id.editTextLastName);
         phone = view.findViewById(R.id.editTextPhone);
         emailAddress = view.findViewById(R.id.editTextEmailAddress);

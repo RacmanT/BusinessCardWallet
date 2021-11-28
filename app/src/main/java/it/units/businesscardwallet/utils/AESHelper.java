@@ -22,7 +22,7 @@ import it.units.businesscardwallet.BuildConfig;
 
 // Cipher https://developer.android.com/reference/javax/crypto/Cipher
 
-public class AESHelper {
+public abstract class AESHelper {
 
     private static final String ALGORITHM = "AES";
     private static final byte[] KEY_CONTENT = Base64.getDecoder().decode(BuildConfig.APP_KEY);

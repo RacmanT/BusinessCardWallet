@@ -58,5 +58,5 @@ dependencies {
     // https://github.com/google/gson
     implementation 'com.google.code.gson:gson:2.8.9'
 
-    implementation 'com.firebaseui:firebase-ui-firestore:8.0.0'
+    //implementation 'com.firebaseui:firebase-ui-firestore:8.0.0'
 }

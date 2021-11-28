@@ -2,7 +2,6 @@ package it.units.businesscardwallet.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,11 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,20 +32,34 @@ public class ContactList extends Fragment {
     private ListView listView;
 
     public ContactList() {
-        // Required empty public constructor
-    }
 
-    public static ContactList newInstance(String param1, String param2) {
-        ContactList fragment = new ContactList();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_contact_list, container, false);
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        listView = view.findViewById(R.id.contact_list);
+        listView.setOnItemClickListener((parent, view1, position, id) -> {
+                    Intent intent = new Intent(getActivity(), ContactInfoActivity.class);
+                    intent.putExtra("contact", contacts.get(position));
+                    startActivity(intent);
+                }
+        );
+        onResume();
     }
 
 
@@ -74,33 +82,12 @@ public class ContactList extends Fragment {
 
         @Override
         public boolean onQueryTextChange(String newText) {
-            adapter.getFilter().filter(newText);
+            if(adapter != null){
+                adapter.getFilter().filter(newText);
+            }
             return false;
         }
     };
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_contact_list, container, false);
-    }
-
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        listView = view.findViewById(R.id.contact_list);
-        listView.setOnItemClickListener((parent, view1, position, id) -> {
-                    Intent intent = new Intent(getActivity(), ContactInfoActivity.class);
-                    intent.putExtra("contact", contacts.get(position));
-                    startActivity(intent);
-                }
-        );
-        onResume();
-
-    }
 
 
     @Override
@@ -109,7 +96,7 @@ public class ContactList extends Fragment {
         contacts.clear();
         DatabaseUtils.contactsRef.get().addOnSuccessListener(queryDocumentSnapshots -> {
                     queryDocumentSnapshots.getDocuments().forEach(doc -> contacts.add(doc.toObject(Contact.class)));
-                    adapter = new ArrayAdapter<>(getActivity(), R.layout.fragment_contact_row, R.id.row_name, contacts);
+                    adapter = new ArrayAdapter<>(getContext(), R.layout.fragment_contact_row, R.id.row_name, contacts);
                     listView.setAdapter(adapter);
                 }
         );

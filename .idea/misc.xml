@@ -27,6 +27,7 @@
         <entry key="app/src/main/res/menu/search_menu.xml" value="0.12916666666666668" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.14635416666666667" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.13541666666666666" />
+        <entry key="app/src/main/res/xml/edit_account_fragment.xml" value="0.11979166666666667" />
         <entry key="app/src/main/res/xml/edit_user_fragment.xml" value="0.18229166666666666" />
         <entry key="app/src/main/res/xml/file_paths.xml" value="0.2776268115942029" />
         <entry key="app/src/main/res/xml/preferences.xml" value="0.18489583333333334" />

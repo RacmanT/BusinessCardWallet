@@ -7,14 +7,14 @@
             app:dialogTitle="@string/edit_name"
             app:key="edit_name"
             app:persistent="true"
-            app:title="@string/name_mandatory" />
+            app:title="@string/name" />
         <!--        app:defaultValue="Patrick"-->
 
         <EditTextPreference
             app:dialogTitle="@string/edit_last_name"
             app:key="edit_last_name"
             app:persistent="true"
-            app:title="@string/last_name_mandatory" />
+            app:title="@string/last_name" />
 
         <EditTextPreference
             app:dialogTitle="@string/edit_profession"

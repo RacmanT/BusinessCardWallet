@@ -33,13 +33,12 @@ import it.units.businesscardwallet.utils.DatabaseUtils;
 
 public class MainActivity extends AppCompatActivity {
 
-
     //https://stackoverflow.com/questions/55280032/how-to-update-document-in-firestore
 
     private ViewPager2 viewPager2;
     private TabLayout tabLayout;
     private Contact myContact;
-
+    private FragmentAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +49,6 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tab_layout);
         viewPager2 = findViewById(R.id.view_pager_2);
 
-
-
         if (DatabaseUtils.userIsNotLogged()) {
             Intent intent = new Intent(MainActivity.this, AuthenticationActivity.class);
             startActivity(intent);
@@ -59,13 +56,9 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-
-
         DatabaseUtils.userRef.get().addOnSuccessListener(documentSnapshot -> {
             myContact = documentSnapshot.toObject(Contact.class);
-
-            FragmentManager fm = getSupportFragmentManager();
-            FragmentAdapter adapter = new FragmentAdapter(fm, getLifecycle());
+            adapter = new FragmentAdapter(getSupportFragmentManager(), getLifecycle());
 
             viewPager2.setAdapter(adapter);
             tabLayout.addOnTabSelectedListener(onTabSelectedListener);
@@ -73,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
 
     @Override
     protected void onStart() {
@@ -82,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, AuthenticationActivity.class);
             startActivity(intent);
             finish();
-            return;
         }
 
     }
@@ -100,17 +93,18 @@ public class MainActivity extends AppCompatActivity {
         switch (id) {
             case R.id.action_add:
                 // TODO add qr code scanner
-                ScanOptions options = new ScanOptions();
                 /*options.setCaptureActivity(AnyOrientationCaptureActivity.class);
                 options.setDesiredBarcodeFormats(ScanOptions.QR_CODE);
                 options.setPrompt("Scan a Business Card QR Code");
                 options.setOrientationLocked(false);
                 options.setBeepEnabled(false);*/
+                ScanOptions options = new ScanOptions();
                 options.setOrientationLocked(false).setCaptureActivity(CustomScannerActivity.class);
                 barcodeLauncher.launch(options);
                 return true;
             case R.id.action_settings:
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                intent.putExtra("myContact", myContact);
                 startActivity(intent);
                 return true;
             default:
@@ -137,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
                         String decryptedData = AESHelper.decrypt(result.getContents());
                         Log.i("KEY", "decryptedData is    " + decryptedData);
                         Contact scannedContact = new Gson().fromJson(decryptedData, Contact.class);
-                        if (scannedContact.equals(myContact)){
+                        if (scannedContact.equals(myContact)) {
                             return;
                         }
                         DatabaseUtils.contactsRef.document(scannedContact.getEmail()).set(scannedContact);
@@ -172,8 +166,6 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-
-
     private class FragmentAdapter extends FragmentStateAdapter {
         public FragmentAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
             super(fragmentManager, lifecycle);
@@ -192,8 +184,6 @@ public class MainActivity extends AppCompatActivity {
         public int getItemCount() {
             return 2;
         }
+
     }
-
-
-
 }

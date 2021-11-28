@@ -42,11 +42,6 @@
             android:label="@string/title_activity_contact_info"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.AnyOrientationCaptureActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:exported="true"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activities.CustomScannerActivity"
             android:configChanges="orientation|keyboardHidden"
             android:exported="true"

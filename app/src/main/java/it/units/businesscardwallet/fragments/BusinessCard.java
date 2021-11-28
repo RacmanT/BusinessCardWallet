@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.StrictMode;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
@@ -27,14 +23,11 @@ import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
-import org.w3c.dom.Text;
-
 import java.io.File;
 import java.io.FileOutputStream;
 
 import it.units.businesscardwallet.BuildConfig;
 import it.units.businesscardwallet.R;
-import it.units.businesscardwallet.activities.MainActivity;
 import it.units.businesscardwallet.entities.Contact;
 import it.units.businesscardwallet.utils.AESHelper;
 
@@ -63,6 +56,7 @@ public class BusinessCard extends Fragment {
         return fragment;
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -165,23 +159,20 @@ public class BusinessCard extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    // https://stackoverflow.com/questions/48117511/exposed-beyond-app-through-clipdata-item-geturi
+    @SuppressWarnings("ConstantConditions")
     private void shareQrCode() {
-        // https://stackoverflow.com/questions/48117511/exposed-beyond-app-through-clipdata-item-geturi
-        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-        StrictMode.setVmPolicy(builder.build());
-
 
         File file = new File(getContext().getCacheDir(), contact.getName() + contact.getLastName() + "QrCode.png");
-        file.setReadable(true, false);
+        file.deleteOnExit();
+        //file.setReadable(true, false);
         try (FileOutputStream fOut = new FileOutputStream(file)) {
 
-            //Uri uri = FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID+".provider", file);
-
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
-            Uri fileUri = FileProvider.getUriForFile(getContext(), "it.units.businesscardwallet.provider", file);
+            Uri fileUri = FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID+".provider"  , file);
             final Intent intent = new Intent(android.content.Intent.ACTION_SEND)
-                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK) // TODO check if remove
+                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION) // TODO check if remove
                     .putExtra(Intent.EXTRA_STREAM, fileUri)
                     .setType("image/png");
 
@@ -189,11 +180,12 @@ public class BusinessCard extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        file.deleteOnExit();
+
     }
 
 
     // https://developer.android.com/training/printing/photos
+    @SuppressWarnings("ConstantConditions")
     private void printQrCode() {
         PrintHelper photoPrinter = new PrintHelper(getActivity()); //requireActivity()
         photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);

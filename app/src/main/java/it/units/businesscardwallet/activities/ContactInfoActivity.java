@@ -7,29 +7,20 @@ import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-
 import it.units.businesscardwallet.R;
 import it.units.businesscardwallet.entities.Contact;
 import it.units.businesscardwallet.fragments.BusinessCard;
+import it.units.businesscardwallet.utils.DatabaseUtils;
 
 public class ContactInfoActivity extends AppCompatActivity {
 
-
-    private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
     private Contact contact;
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_info);
-
-        mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -43,21 +34,17 @@ public class ContactInfoActivity extends AppCompatActivity {
     @SuppressLint("NonConstantResourceId")
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        switch (id){
+        switch (id) {
             case android.R.id.home:
                 finish();
-                return true;
+                return super.onOptionsItemSelected(item);
             case R.id.action_delete:
-                DocumentReference documentReference = db.collection("users").document(mAuth.getCurrentUser().getUid())
-                                                        .collection("contacts").document(contact.getEmail());
-                documentReference.delete().addOnSuccessListener(unused -> {
-                    finish();
-                });
-                return true;
+                DatabaseUtils.contactsRef.document(contact.getEmail())
+                        .delete().addOnSuccessListener(unused -> finish());
+                return super.onOptionsItemSelected(item);
             default:
                 return super.onOptionsItemSelected(item);
         }
-
     }
 
     @Override

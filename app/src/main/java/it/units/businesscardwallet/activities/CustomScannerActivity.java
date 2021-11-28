@@ -92,7 +92,7 @@ public class CustomScannerActivity extends Activity implements
     }
 
     public void switchFlashlight(View view) {
-        if ("turn on flashlight".equals(switchFlashlightButton.getText())) {
+        if ("turn on flashlight".equals(switchFlashlightButton.getText().toString())) {
             barcodeScannerView.setTorchOn();
         } else {
             barcodeScannerView.setTorchOff();

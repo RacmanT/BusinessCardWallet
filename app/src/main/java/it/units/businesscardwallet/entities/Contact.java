@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 import java.util.Objects;
 
+// TODO rename in user
 public class Contact implements Serializable {
 
     private String name;

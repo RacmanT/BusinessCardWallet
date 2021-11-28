@@ -10,6 +10,7 @@
             app:useSimpleSummaryProvider="true" />
 
         <Preference
+            app:fragment="it.units.businesscardwallet.fragments.EditAccountFragment"
             app:key="edit_account"
             app:title="@string/edit_account"
             app:useSimpleSummaryProvider="true" />
@@ -37,11 +38,7 @@
 
     </PreferenceCategory>
 
-
     <PreferenceCategory app:title="@string/about">
-
-
-
 
         <Preference
             android:summary="@string/version"
@@ -63,7 +60,6 @@
             app:key="log_out"
             app:title="@string/log_out"
             app:useSimpleSummaryProvider="true" />
-
 
     </PreferenceCategory>
 

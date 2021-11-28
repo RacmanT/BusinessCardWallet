@@ -1,27 +1,48 @@
 package it.units.businesscardwallet.utils;
 
+import android.annotation.SuppressLint;
+
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class DatabaseUtils {
+@SuppressWarnings("ConstantConditions")
+@SuppressLint("StaticFieldLeak")
+public abstract class DatabaseUtils {
 
-    public static FirebaseAuth AUTH = FirebaseAuth.getInstance();
-    public static FirebaseFirestore DATABASE = FirebaseFirestore.getInstance();
+    private static final FirebaseAuth AUTH = FirebaseAuth.getInstance();
+    private static final FirebaseFirestore DATABASE = FirebaseFirestore.getInstance();
 
-    public static  DocumentReference userRef;
-    public static  CollectionReference contactsRef;
+    public static DocumentReference userRef;
+    public static CollectionReference contactsRef;
 
     public static void init() {
-        if(AUTH.getCurrentUser() != null){
-             userRef = DATABASE.collection("users").document(AUTH.getCurrentUser().getUid());
-             contactsRef = userRef.collection("contacts");
+        if (!userIsNotLogged()) {
+            userRef = DATABASE.collection("users").document(AUTH.getCurrentUser().getUid());
+            contactsRef = userRef.collection("contacts");
         }
     }
 
-    public static boolean userIsNotLogged(){
+    public static boolean userIsNotLogged() {
         return AUTH.getCurrentUser() == null;
+    }
+
+    public static void signOut(){
+        AUTH.signOut();
+    }
+
+    public static FirebaseUser getUser() {
+        return AUTH.getCurrentUser();
+    }
+
+
+
+    public static void deleteAccount(){
+        AUTH.signOut();
+        //AUTH.getCurrentUser().delete().isComplete();
+
     }
 
 }
