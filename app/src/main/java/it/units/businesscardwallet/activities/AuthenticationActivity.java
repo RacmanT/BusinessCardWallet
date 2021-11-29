@@ -9,7 +9,6 @@ import it.units.businesscardwallet.fragments.LoginFragment;
 
 public class AuthenticationActivity extends AppCompatActivity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -98,6 +98,7 @@ public class ContactList extends Fragment {
                     queryDocumentSnapshots.getDocuments().forEach(doc -> contacts.add(doc.toObject(Contact.class)));
                     adapter = new ArrayAdapter<>(getContext(), R.layout.fragment_contact_row, R.id.row_name, contacts);
                     listView.setAdapter(adapter);
+                    //adapter.notifyDataSetChanged();
                 }
         );
     }

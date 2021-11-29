@@ -1,5 +1,7 @@
 package it.units.businesscardwallet.activities;
 
+import static androidx.viewpager.widget.PagerAdapter.POSITION_NONE;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +16,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.adapter.FragmentViewHolder;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
@@ -22,6 +26,8 @@ import com.google.gson.Gson;
 import com.google.zxing.client.android.Intents;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
+
+import java.util.List;
 
 import it.units.businesscardwallet.R;
 import it.units.businesscardwallet.entities.Contact;
@@ -63,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
             viewPager2.setAdapter(adapter);
             tabLayout.addOnTabSelectedListener(onTabSelectedListener);
             viewPager2.registerOnPageChangeCallback(onPageChangeCallback);
+
         });
 
     }
@@ -79,6 +86,19 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        DatabaseUtils.userRef.get().addOnSuccessListener(documentSnapshot -> {
+
+                myContact = documentSnapshot.toObject(Contact.class);
+                Log.i("TEST", myContact.getName());
+                adapter.notifyItemChanged(0);
+        });
+
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -167,8 +187,11 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private class FragmentAdapter extends FragmentStateAdapter {
+
+        FragmentManager fragmentManager;
         public FragmentAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
             super(fragmentManager, lifecycle);
+            this.fragmentManager = fragmentManager;
         }
 
         @NonNull
@@ -184,6 +207,20 @@ public class MainActivity extends AppCompatActivity {
         public int getItemCount() {
             return 2;
         }
+
+        @Override
+        public long getItemId(int position) {
+            if(fragmentManager.findFragmentByTag("f"+position) != null && position == 0){
+                return fragmentManager.findFragmentByTag("f"+position).hashCode();
+            }
+            return super.getItemId(position);
+        }
+
+        @Override
+        public boolean containsItem(long itemId) {
+            return fragmentManager.getFragments().stream().anyMatch(fragment -> fragment.hashCode() == itemId);
+        }
+
 
     }
 }
