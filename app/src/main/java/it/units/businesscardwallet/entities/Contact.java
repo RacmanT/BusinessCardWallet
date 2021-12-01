@@ -17,6 +17,12 @@ public class Contact implements Serializable {
     private String address;
 
     public Contact() {
+        this.name = "";
+        this.lastName = "";
+        this.profession = "";
+        this.email = "";
+        this.phoneNumber = "";
+        this.address = "";
     }
 
     public Contact(String name, String lastName, String profession, String email, String phoneNumber, String address) {

@@ -27,7 +27,9 @@ import it.units.businesscardwallet.utils.DatabaseUtils;
 
 public class ContactList extends Fragment {
 
-    private final List<Contact> contacts = new ArrayList<>();
+    private static final String ARG_PARAM_LIST = "ARG_PARAM_LIST";
+    //private final List<Contact> contacts = new ArrayList<>();
+    private List<Contact> list;
     private ArrayAdapter<Contact> adapter;
     private ListView listView;
 
@@ -35,15 +37,25 @@ public class ContactList extends Fragment {
 
     }
 
+    public static ContactList newInstance(ArrayList<Contact> list) {
+        ContactList fragment = new ContactList();
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_PARAM_LIST, list);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+        list = (ArrayList<Contact>)getArguments().getSerializable(ARG_PARAM_LIST);
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         return inflater.inflate(R.layout.fragment_contact_list, container, false);
     }
 
@@ -53,13 +65,17 @@ public class ContactList extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         listView = view.findViewById(R.id.contact_list);
+
+
+        adapter = new ArrayAdapter<Contact>(getContext(), R.layout.fragment_contact_row, R.id.row_name, list);
+        listView.setAdapter(adapter);
+
         listView.setOnItemClickListener((parent, view1, position, id) -> {
                     Intent intent = new Intent(getActivity(), ContactInfoActivity.class);
-                    intent.putExtra("contact", contacts.get(position));
+                    intent.putExtra("contact", list.get(position));
                     startActivity(intent);
                 }
         );
-        onResume();
     }
 
 
@@ -73,6 +89,7 @@ public class ContactList extends Fragment {
         searchView.setOnQueryTextListener(onQueryTextListener);
 
     }
+
 
     private final SearchView.OnQueryTextListener onQueryTextListener = new SearchView.OnQueryTextListener() {
         @Override
@@ -89,19 +106,6 @@ public class ContactList extends Fragment {
         }
     };
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        contacts.clear();
-        DatabaseUtils.contactsRef.get().addOnSuccessListener(queryDocumentSnapshots -> {
-                    queryDocumentSnapshots.getDocuments().forEach(doc -> contacts.add(doc.toObject(Contact.class)));
-                    adapter = new ArrayAdapter<>(getContext(), R.layout.fragment_contact_row, R.id.row_name, contacts);
-                    listView.setAdapter(adapter);
-                    //adapter.notifyDataSetChanged();
-                }
-        );
-    }
 
 
 }
