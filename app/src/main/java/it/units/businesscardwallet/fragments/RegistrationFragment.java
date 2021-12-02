@@ -73,7 +73,6 @@ public class RegistrationFragment extends Fragment {
 
         registerButton.setOnClickListener(v -> {
 
-
             if (isMissingValue(name, lastName, profession, emailAddress, password, confirmPassword)) {
                 int missingValueColor = getContext().getColor(android.R.color.holo_red_light);
                 setMissingValueColorHint(missingValueColor, name, lastName, profession, emailAddress, password, confirmPassword);

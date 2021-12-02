@@ -25,6 +25,7 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.List;
 
 import it.units.businesscardwallet.BuildConfig;
 import it.units.businesscardwallet.R;
@@ -33,7 +34,6 @@ import it.units.businesscardwallet.utils.AESHelper;
 
 
 public class BusinessCard extends Fragment {
-
 
     private static final String ARG_PARAM_CONTACT = "ARG_PARAM_CONTACT";
 
@@ -68,7 +68,6 @@ public class BusinessCard extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
 
         // TODO https://stackoverflow.com/questions/25279715/android-how-to-add-icon-at-the-left-side-of-the-textview/25279726
         view = inflater.inflate(R.layout.fragment_business_card, container, false);
@@ -120,7 +119,6 @@ public class BusinessCard extends Fragment {
             address.setText(this.contact.getAddress());
         }
 
-
         try {
             String json = gson.toJson(this.contact);
             String encryptedJson = AESHelper.encrypt(json);
@@ -135,7 +133,6 @@ public class BusinessCard extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return view;
     }
 
@@ -162,7 +159,6 @@ public class BusinessCard extends Fragment {
     // https://stackoverflow.com/questions/48117511/exposed-beyond-app-through-clipdata-item-geturi
     @SuppressWarnings("ConstantConditions")
     private void shareQrCode() {
-
         File file = new File(getContext().getCacheDir(), contact.getName() + contact.getLastName() + "QrCode.png");
         file.deleteOnExit();
         //file.setReadable(true, false);
@@ -182,7 +178,6 @@ public class BusinessCard extends Fragment {
         }
 
     }
-
 
     // https://developer.android.com/training/printing/photos
     @SuppressWarnings("ConstantConditions")

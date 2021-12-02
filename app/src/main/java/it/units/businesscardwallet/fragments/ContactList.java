@@ -67,7 +67,7 @@ public class ContactList extends Fragment {
         listView = view.findViewById(R.id.contact_list);
 
 
-        adapter = new ArrayAdapter<Contact>(getContext(), R.layout.fragment_contact_row, R.id.row_name, list);
+        adapter = new ArrayAdapter<>(getContext(), R.layout.fragment_contact_row, R.id.row_name, list);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener((parent, view1, position, id) -> {
@@ -105,8 +105,6 @@ public class ContactList extends Fragment {
             return false;
         }
     };
-
-
 
 }
 

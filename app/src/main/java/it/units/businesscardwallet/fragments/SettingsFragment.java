@@ -20,7 +20,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         // TODO or this or app:fragment in xml
         //findPreference("edit_business_card").setFragment("it.units.businesscardwallet.fragments.EditUserFragment");
 
-
         SwitchPreferenceCompat switchDarkTheme = findPreference("enable_dark_theme");
         switchDarkTheme.setOnPreferenceClickListener((preference) -> {
             if (switchDarkTheme.isChecked()) {

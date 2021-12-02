@@ -1,6 +1,7 @@
 package it.units.businesscardwallet.utils;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,6 +20,7 @@ public abstract class DatabaseUtils {
     public static CollectionReference contactsRef;
 
     public static void init() {
+        Log.i("TEST", !userIsNotLogged()+"");
         if (!userIsNotLogged()) {
             userRef = DATABASE.collection("users").document(AUTH.getCurrentUser().getUid());
             contactsRef = userRef.collection("contacts");
@@ -36,7 +38,6 @@ public abstract class DatabaseUtils {
     public static FirebaseUser getUser() {
         return AUTH.getCurrentUser();
     }
-
 
 
     public static void deleteAccount(){
