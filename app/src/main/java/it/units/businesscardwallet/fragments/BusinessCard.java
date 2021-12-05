@@ -81,7 +81,6 @@ public class BusinessCard extends Fragment {
 
         initLayout();
 
-
         try {
             String json = gson.toJson(this.contact);
             String encryptedJson = AESHelper.encrypt(json);
@@ -184,6 +183,28 @@ public class BusinessCard extends Fragment {
             address.setVisibility(View.GONE);
             addressIcon.setVisibility(View.GONE);
         }
+
+        // https://developer.android.com/guide/components/intents-common
+
+        address.setOnClickListener(v -> {
+            Uri gmmIntentUri = Uri.parse("geo:0,0?q="+address.getText().toString());
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+            startActivity(mapIntent);
+        });
+
+        emailAddress.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.setData(Uri.parse("mailto:"));
+            intent.putExtra(Intent.EXTRA_EMAIL, new String[] { emailAddress.getText().toString() });
+                startActivity(intent);
+        });
+
+        phone.setOnClickListener(v -> {
+            Intent intent = new Intent(Intent.ACTION_DIAL);
+            intent.setData(Uri.parse("tel:" + phone.getText().toString()));
+            startActivity(intent);
+        });
 
     }
 

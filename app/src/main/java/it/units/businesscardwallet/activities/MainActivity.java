@@ -1,15 +1,22 @@
 package it.units.businesscardwallet.activities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +38,9 @@ import com.google.zxing.common.HybridBinarizer;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import it.units.businesscardwallet.R;
@@ -75,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (DatabaseUtils.userIsNotLogged()) {
             Intent intent = new Intent(MainActivity.this, AuthenticationActivity.class);
-            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             finish();
             startActivity(intent);
             return;
@@ -92,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
         listContacts.clear();
         DatabaseUtils.contactsRef.get().addOnSuccessListener(queryDocumentSnapshots -> {
             queryDocumentSnapshots.getDocuments().forEach(doc -> listContacts.add(doc.toObject(Contact.class)));
-            //listContacts =  (ArrayList<Contact>) listContacts.stream().distinct().collect(Collectors.toList());
             if (adapter != null) {
                 adapter.notifyDataSetChanged();
             }
@@ -124,6 +132,9 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("myContact", myContact);
                 startActivity(intent);
                 return true;
+            case R.id.action_add_from_image:
+                importFromFile();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
 
@@ -147,12 +158,6 @@ public class MainActivity extends AppCompatActivity {
                         String decryptedData = AESHelper.decrypt(result.getContents());
                         Log.i("KEY", "decryptedData is    " + decryptedData);
                         Contact scannedContact = new Gson().fromJson(decryptedData, Contact.class);
-                        /*if (scannedContact.equals(myContact)) {
-                            return;
-                        } else {
-                            DatabaseUtils.contactsRef.document(scannedContact.getEmail()).set(scannedContact);
-                            startActivity(new Intent(MainActivity.this, ContactInfoActivity.class).putExtra("contact", scannedContact));
-                        }*/
                         if (!scannedContact.equals(myContact)) {
                             DatabaseUtils.contactsRef.document(scannedContact.getEmail()).set(scannedContact);
                             startActivity(new Intent(MainActivity.this, ContactInfoActivity.class).putExtra("contact", scannedContact));
@@ -163,7 +168,48 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-   // TODO add https://stackoverflow.com/questions/32134072/qr-code-scan-from-image-file
+    // TODO add https://stackoverflow.com/questions/32134072/qr-code-scan-from-image-file
+
+
+    private void importFromFile() {
+
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("image/*");
+        startForResultFromGallery.launch(intent);
+
+    }
+
+    private final ActivityResultLauncher startForResultFromGallery = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() == Activity.RESULT_OK){
+            try {
+                if (result.getData() != null){
+                    Uri selectedImageUri = result.getData().getData();
+                    Bitmap bmap = BitmapFactory.decodeStream(getBaseContext().getContentResolver().openInputStream(selectedImageUri));
+
+                    int[] intArray = new int[bmap.getWidth() * bmap.getHeight()];
+                    bmap.getPixels(intArray, 0, bmap.getWidth(), 0, 0, bmap.getWidth(), bmap.getHeight());
+
+                    LuminanceSource source = new RGBLuminanceSource(bmap.getWidth(), bmap.getHeight(), intArray);
+                    BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
+                    try {
+                        String contents = new MultiFormatReader().decode(bitmap).getText();
+
+                        String decryptedData = AESHelper.decrypt(contents);
+                        Contact scannedContact = new Gson().fromJson(decryptedData, Contact.class);
+                        if (!scannedContact.equals(myContact)) {
+                            DatabaseUtils.contactsRef.document(scannedContact.getEmail()).set(scannedContact);
+                            startActivity(new Intent(MainActivity.this, ContactInfoActivity.class).putExtra("contact", scannedContact));
+                        }
+                    } catch (Exception e) {
+                        Toast.makeText(MainActivity.this, "Image does not contain a valid QR code", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }catch (Exception exception){
+                Log.d("TAG",""+exception.getLocalizedMessage());
+            }
+        }
+    });
 
 
     private class FragmentAdapter extends FragmentStatePagerAdapter {

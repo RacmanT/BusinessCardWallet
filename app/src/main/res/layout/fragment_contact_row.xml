@@ -10,6 +10,8 @@
         app:cardUseCompatPadding="true">
 
 
+
+
         <TextView
             android:id="@+id/row_name"
             android:layout_width="match_parent"
@@ -17,6 +19,7 @@
             android:gravity="center"
             android:padding="10dp"
             android:textSize="20sp" />
+
 
 
     </com.google.android.material.card.MaterialCardView>
