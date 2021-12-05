@@ -23,6 +23,18 @@
             app:title="@string/profession" />
 
         <EditTextPreference
+            app:dialogTitle="@string/edit_address"
+            app:key="edit_address"
+            app:persistent="true"
+            app:title="@string/address" />
+
+        <EditTextPreference
+            app:dialogTitle="@string/edit_institution"
+            app:key="edit_institution"
+            app:persistent="true"
+            app:title="@string/insitution" />
+
+        <EditTextPreference
             android:digits="0123456789"
             android:inputType="number"
             app:dialogTitle="@string/edit_phone"

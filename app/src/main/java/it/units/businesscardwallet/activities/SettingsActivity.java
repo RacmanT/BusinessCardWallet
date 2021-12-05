@@ -20,9 +20,9 @@ import it.units.businesscardwallet.R;
 import it.units.businesscardwallet.entities.Contact;
 import it.units.businesscardwallet.fragments.SettingsFragment;
 
+@SuppressWarnings("ConstantConditions")
 public class SettingsActivity extends AppCompatActivity implements PreferenceFragmentCompat.OnPreferenceStartFragmentCallback{
 
-    @SuppressWarnings("ConstantConditions")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +31,6 @@ public class SettingsActivity extends AppCompatActivity implements PreferenceFra
         Contact myContact = (Contact) getIntent().getSerializableExtra("myContact");
         initPref(myContact);
 
-
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
@@ -39,15 +38,6 @@ public class SettingsActivity extends AppCompatActivity implements PreferenceFra
                     .commit();
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    @Override
-    protected void onResume() {
-        // TODO remove
-        super.onResume();
-        Map<String, ?> prefs =  PreferenceManager.getDefaultSharedPreferences(this).getAll();
-        Log.i("TEST", prefs.toString() );
-
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -77,7 +67,7 @@ public class SettingsActivity extends AppCompatActivity implements PreferenceFra
         return true;
     }
 
-    @SuppressWarnings("ConstantConditions")
+
     public void setActionBarTitle(String title) {
         getSupportActionBar().setTitle(title);
     }
@@ -87,7 +77,10 @@ public class SettingsActivity extends AppCompatActivity implements PreferenceFra
         prefs.edit().putString("edit_name", contact.getName()).apply();
         prefs.edit().putString("edit_last_name", contact.getLastName()).apply();
         prefs.edit().putString("edit_profession", contact.getProfession()).apply();
+        prefs.edit().putString("edit_institution", contact.getInstitution()).apply();
+        prefs.edit().putString("edit_address", contact.getAddress()).apply();
         prefs.edit().putString("edit_phone", contact.getPhoneNumber()).apply();
+        prefs.edit().putString("edit_email", contact.getEmail()).apply();
         // TODO language and theme
         if(Locale.getDefault().getLanguage().equals(new Locale("sl").getLanguage()) ||
            Locale.getDefault().getLanguage().equals(new Locale("it").getLanguage())){

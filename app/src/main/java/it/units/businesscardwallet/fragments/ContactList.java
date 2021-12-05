@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +33,7 @@ public class ContactList extends Fragment {
     private List<Contact> list;
     private ArrayAdapter<Contact> adapter;
     private ListView listView;
+    private TextView addSomeone;
 
     public ContactList() {
 
@@ -65,6 +67,7 @@ public class ContactList extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         listView = view.findViewById(R.id.contact_list);
+        addSomeone = view.findViewById(R.id.add_someone);
 
 
         adapter = new ArrayAdapter<>(getContext(), R.layout.fragment_contact_row, R.id.row_name, list);
@@ -76,6 +79,12 @@ public class ContactList extends Fragment {
                     startActivity(intent);
                 }
         );
+
+        if(list.isEmpty()){
+            listView.setVisibility(View.GONE);
+            addSomeone.setVisibility(View.VISIBLE);
+        }
+
     }
 
 

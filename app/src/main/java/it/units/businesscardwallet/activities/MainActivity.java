@@ -2,6 +2,7 @@ package it.units.businesscardwallet.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -19,12 +20,18 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
+import com.google.zxing.BinaryBitmap;
+import com.google.zxing.LuminanceSource;
+import com.google.zxing.MultiFormatReader;
+import com.google.zxing.RGBLuminanceSource;
+import com.google.zxing.Reader;
+import com.google.zxing.Result;
 import com.google.zxing.client.android.Intents;
+import com.google.zxing.common.HybridBinarizer;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 import it.units.businesscardwallet.R;
 import it.units.businesscardwallet.entities.Contact;
@@ -61,13 +68,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    // previously onResume() moved to onStart() https://stackoverflow.com/questions/14375720/android-destroying-activities-killing-processes
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
 
         if (DatabaseUtils.userIsNotLogged()) {
             Intent intent = new Intent(MainActivity.this, AuthenticationActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             finish();
             startActivity(intent);
             return;
@@ -99,20 +107,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_add:
-                // TODO add qr code scanner
-                /*options.setCaptureActivity(AnyOrientationCaptureActivity.class);
-                options.setDesiredBarcodeFormats(ScanOptions.QR_CODE);
-                options.setPrompt("Scan a Business Card QR Code");
-                options.setOrientationLocked(false);
-                options.setBeepEnabled(false);*/
                 ScanOptions options = new ScanOptions();
-                options.setOrientationLocked(false).setCaptureActivity(CustomScannerActivity.class);
+                options.setCaptureActivity(CustomScannerActivity.class)
+                        .setDesiredBarcodeFormats(ScanOptions.QR_CODE)
+                        .setOrientationLocked(false)
+                        .setBeepEnabled(false);
                 barcodeLauncher.launch(options);
                 return true;
             case R.id.action_settings:
@@ -124,7 +128,6 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
-
     }
 
     private final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(new ScanContract(),
@@ -144,16 +147,23 @@ public class MainActivity extends AppCompatActivity {
                         String decryptedData = AESHelper.decrypt(result.getContents());
                         Log.i("KEY", "decryptedData is    " + decryptedData);
                         Contact scannedContact = new Gson().fromJson(decryptedData, Contact.class);
-                        if (scannedContact.equals(myContact)) {
+                        /*if (scannedContact.equals(myContact)) {
                             return;
+                        } else {
+                            DatabaseUtils.contactsRef.document(scannedContact.getEmail()).set(scannedContact);
+                            startActivity(new Intent(MainActivity.this, ContactInfoActivity.class).putExtra("contact", scannedContact));
+                        }*/
+                        if (!scannedContact.equals(myContact)) {
+                            DatabaseUtils.contactsRef.document(scannedContact.getEmail()).set(scannedContact);
+                            startActivity(new Intent(MainActivity.this, ContactInfoActivity.class).putExtra("contact", scannedContact));
                         }
-                        DatabaseUtils.contactsRef.document(scannedContact.getEmail()).set(scannedContact);
-                        startActivity(new Intent(MainActivity.this, ContactInfoActivity.class).putExtra("contact", scannedContact));
                     } catch (Exception e) {
                         Toast.makeText(MainActivity.this, "Invalid QR", Toast.LENGTH_LONG).show();
                     }
                 }
             });
+
+   // TODO add https://stackoverflow.com/questions/32134072/qr-code-scan-from-image-file
 
 
     private class FragmentAdapter extends FragmentStatePagerAdapter {
@@ -165,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
         @NonNull
         @Override
         public Fragment getItem(int position) {
-            if(position == 0){
+            if (position == 0) {
                 return BusinessCard.newInstance(myContact);
             } else {
                 return ContactList.newInstance(listContacts);
@@ -178,7 +188,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //https://stackoverflow.com/questions/18088076/update-fragment-from-viewpager
-
         @Override
         public int getItemPosition(@NonNull Object object) {
             return POSITION_NONE;
@@ -187,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
         @Nullable
         @Override
         public CharSequence getPageTitle(int position) {
-            if(position == 0){
+            if (position == 0) {
                 return "Home";
             } else {
                 return "Contacts";

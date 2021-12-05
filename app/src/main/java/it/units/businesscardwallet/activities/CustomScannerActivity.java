@@ -5,9 +5,10 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.content.res.AppCompatResources;
 
 import com.journeyapps.barcodescanner.CaptureManager;
 import com.journeyapps.barcodescanner.DecoratedBarcodeView;
@@ -15,15 +16,12 @@ import com.journeyapps.barcodescanner.ViewfinderView;
 
 import it.units.businesscardwallet.R;
 
-/**
- * Custom Scannner Activity extending from Activity to display a custom layout form scanner view.
- */
 public class CustomScannerActivity extends Activity implements
         DecoratedBarcodeView.TorchListener {
 
     private CaptureManager capture;
     private DecoratedBarcodeView barcodeScannerView;
-    private Button switchFlashlightButton;
+    private ImageButton switchFlashlightButton;
     private ViewfinderView viewfinderView;
 
     @Override
@@ -36,21 +34,21 @@ public class CustomScannerActivity extends Activity implements
 
         switchFlashlightButton = findViewById(R.id.switch_flashlight);
 
+        switchFlashlightButton.setOnClickListener(flashListener);
+
         viewfinderView = findViewById(R.id.zxing_viewfinder_view);
 
-        // if the device does not have flashlight in its camera,
-        // then remove the switch flashlight button...
         if (!hasFlash()) {
             switchFlashlightButton.setVisibility(View.GONE);
         }
+
 
         capture = new CaptureManager(this, barcodeScannerView);
         capture.initializeFromIntent(getIntent(), savedInstanceState);
         capture.setShowMissingCameraPermissionDialog(false);
         capture.decode();
 
-//        changeMaskColor(null);
-        changeLaserVisibility(true);
+        changeLaserVisibility(false);
     }
 
     @Override
@@ -82,21 +80,10 @@ public class CustomScannerActivity extends Activity implements
         return barcodeScannerView.onKeyDown(keyCode, event) || super.onKeyDown(keyCode, event);
     }
 
-    /**
-     * Check if the device's camera has a Flashlight.
-     * @return true if there is Flashlight, otherwise false.
-     */
+
     private boolean hasFlash() {
         return getApplicationContext().getPackageManager()
                 .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
-    }
-
-    public void switchFlashlight(View view) {
-        if ("turn on flashlight".equals(switchFlashlightButton.getText().toString())) {
-            barcodeScannerView.setTorchOn();
-        } else {
-            barcodeScannerView.setTorchOff();
-        }
     }
 
 
@@ -104,14 +91,23 @@ public class CustomScannerActivity extends Activity implements
         viewfinderView.setLaserVisibility(visible);
     }
 
+    public View.OnClickListener flashListener = v -> {
+        if (!switchFlashlightButton.isSelected()) {
+            barcodeScannerView.setTorchOn();
+        } else {
+            barcodeScannerView.setTorchOff();
+        }
+        switchFlashlightButton.setSelected(!switchFlashlightButton.isSelected());
+    };
+
     @Override
     public void onTorchOn() {
-        switchFlashlightButton.setText("turn on flashlight");
+        switchFlashlightButton.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.ic_baseline_flash_on_24));
     }
 
     @Override
     public void onTorchOff() {
-        switchFlashlightButton.setText("turn on flashlight");
+        switchFlashlightButton.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.ic_baseline_flash_off_24));
     }
 
     @Override

@@ -13,13 +13,14 @@
         app:zxing_scanner_layout="@layout/custom_barcode_scanner">
     </com.journeyapps.barcodescanner.DecoratedBarcodeView>
 
-    <Button
+    <ImageButton
         android:id="@+id/switch_flashlight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="turn_on_flashlight"
+        android:state_selected="true"
+        android:background="@null"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="switchFlashlight"/>
+        android:src="@drawable/ic_baseline_flash_off_24"
+        android:contentDescription="Flash button"/>
 
 </RelativeLayout>

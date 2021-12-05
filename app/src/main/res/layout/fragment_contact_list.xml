@@ -18,4 +18,15 @@
         android:dividerHeight="5dp"-->
 
 
+    <TextView
+        android:id="@+id/add_someone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="@string/please_add_someone"
+        android:visibility="gone"
+        android:textSize="20sp" />
+
+
 </LinearLayout>

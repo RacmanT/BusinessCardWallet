@@ -32,7 +32,7 @@ import it.units.businesscardwallet.R;
 import it.units.businesscardwallet.entities.Contact;
 import it.units.businesscardwallet.utils.AESHelper;
 
-
+@SuppressWarnings("ConstantConditions")
 public class BusinessCard extends Fragment {
 
     private static final String ARG_PARAM_CONTACT = "ARG_PARAM_CONTACT";
@@ -42,8 +42,8 @@ public class BusinessCard extends Fragment {
     private final Gson gson = new Gson();
 
     private View view;
-    private TextView name, lastName, profession, phone, emailAddress, address;
-    private ImageView phoneIcon, addressIcon, emailIcon;
+    private TextView name, lastName, profession, phone, emailAddress, address, institution;
+    private ImageView phoneIcon, addressIcon, emailIcon, institutionIcon;
 
     public BusinessCard() {
     }
@@ -56,7 +56,6 @@ public class BusinessCard extends Fragment {
         return fragment;
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,51 +72,15 @@ public class BusinessCard extends Fragment {
         view = inflater.inflate(R.layout.fragment_business_card, container, false);
 
         name = view.findViewById(R.id.first_name);
-        name.setText(this.contact.getName());
-
         lastName = view.findViewById(R.id.last_name);
-        lastName.setText(this.contact.getLastName());
-
         profession = view.findViewById(R.id.profession);
-        profession.setText(this.contact.getProfession());
-
         phone = view.findViewById(R.id.phone_number);
-        phoneIcon = view.findViewById(R.id.phone_icon);
-
-        if (this.contact.getPhoneNumber().isEmpty()) {
-            phone.setVisibility(View.GONE);
-            phoneIcon.setVisibility(View.GONE);
-        } else {
-            phone.setVisibility(View.VISIBLE);
-            phoneIcon.setVisibility(View.VISIBLE);
-            phone.setText(this.contact.getPhoneNumber());
-        }
-
         emailAddress = view.findViewById(R.id.email_address);
-        emailIcon = view.findViewById(R.id.email_icon);
-
-
-        if (this.contact.getEmail().isEmpty()) {
-            emailAddress.setVisibility(View.GONE);
-            emailIcon.setVisibility(View.GONE);
-        } else {
-            emailAddress.setVisibility(View.VISIBLE);
-            emailIcon.setVisibility(View.VISIBLE);
-            emailAddress.setText(this.contact.getEmail());
-        }
-
-
         address = view.findViewById(R.id.address);
-        addressIcon = view.findViewById(R.id.location_icon);
+        institution = view.findViewById(R.id.institution);
 
-        if (this.contact.getAddress().isEmpty()) {
-            address.setVisibility(View.GONE);
-            addressIcon.setVisibility(View.GONE);
-        } else {
-            address.setVisibility(View.VISIBLE);
-            addressIcon.setVisibility(View.VISIBLE);
-            address.setText(this.contact.getAddress());
-        }
+        initLayout();
+
 
         try {
             String json = gson.toJson(this.contact);
@@ -157,7 +120,6 @@ public class BusinessCard extends Fragment {
     }
 
     // https://stackoverflow.com/questions/48117511/exposed-beyond-app-through-clipdata-item-geturi
-    @SuppressWarnings("ConstantConditions")
     private void shareQrCode() {
         File file = new File(getContext().getCacheDir(), contact.getName() + contact.getLastName() + "QrCode.png");
         file.deleteOnExit();
@@ -165,7 +127,7 @@ public class BusinessCard extends Fragment {
         try (FileOutputStream fOut = new FileOutputStream(file)) {
 
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
-            Uri fileUri = FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID+".provider"  , file);
+            Uri fileUri = FileProvider.getUriForFile(getContext(), BuildConfig.APPLICATION_ID + ".provider", file);
             final Intent intent = new Intent(android.content.Intent.ACTION_SEND)
                     .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK) // TODO check if remove
                     .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION) // TODO check if remove
@@ -180,11 +142,49 @@ public class BusinessCard extends Fragment {
     }
 
     // https://developer.android.com/training/printing/photos
-    @SuppressWarnings("ConstantConditions")
+
     private void printQrCode() {
         PrintHelper photoPrinter = new PrintHelper(getActivity()); //requireActivity()
         photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
         photoPrinter.printBitmap("qrCode.jpg - test print", bitmap);
+    }
+
+
+    private void initLayout() {
+
+        name.setText(contact.getName());
+        lastName.setText(contact.getLastName());
+        profession.setText(contact.getProfession());
+        phone.setText(contact.getPhoneNumber());
+        emailAddress.setText(contact.getEmail());
+        address.setText(contact.getAddress());
+        institution.setText(contact.getInstitution());
+
+        institutionIcon = view.findViewById(R.id.institution_icon);
+        phoneIcon = view.findViewById(R.id.phone_icon);
+        emailIcon = view.findViewById(R.id.email_icon);
+        addressIcon = view.findViewById(R.id.location_icon);
+
+        if (this.contact.getInstitution().isEmpty()) {
+            institution.setVisibility(View.GONE);
+            institutionIcon.setVisibility(View.GONE);
+        }
+
+        if (this.contact.getPhoneNumber().isEmpty()) {
+            phone.setVisibility(View.GONE);
+            phoneIcon.setVisibility(View.GONE);
+        }
+
+        if (this.contact.getEmail().isEmpty()) {
+            emailAddress.setVisibility(View.GONE);
+            emailIcon.setVisibility(View.GONE);
+        }
+
+        if (this.contact.getAddress().isEmpty()) {
+            address.setVisibility(View.GONE);
+            addressIcon.setVisibility(View.GONE);
+        }
+
     }
 
 

@@ -116,7 +116,7 @@ public class RegistrationFragment extends Fragment {
             }
 
             newUser = new Contact(name.getText().toString(), lastName.getText().toString(), profession.getText().toString(), emailAddress.getText().toString(),
-                                    phone.getText().toString(), address.getText().toString());
+                                    phone.getText().toString(), address.getText().toString(), institution.getText().toString());
 
             mAuth.createUserWithEmailAndPassword(emailAddress.getText().toString(), password.getText().toString())
                     .addOnSuccessListener(authResult ->

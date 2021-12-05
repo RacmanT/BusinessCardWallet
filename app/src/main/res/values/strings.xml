@@ -80,4 +80,10 @@
     <string name="edit_password">Edit password</string>
     <string name="name">Name</string>
     <string name="last_name">Last name</string>
+    <string name="turn_flash_on">Turn flash on</string>
+    <string name="scan_a_business_card_qr_code">Scan a Business Card QR Code</string>
+    <string name="please_add_someone">Please add someone</string>
+    <string name="edit_address">Edit address</string>
+    <string name="edit_institution">Edit institution</string>
+    <string name="insitution">Institution</string>
 </resources>

@@ -14,7 +14,6 @@ public class AuthenticationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //redirectToLogin();
         setContentView(R.layout.activity_authentication);
 
         if (savedInstanceState == null) {
@@ -26,12 +25,4 @@ public class AuthenticationActivity extends AppCompatActivity {
 
     }
 
-    private void redirectToLogin() {
-        if (DatabaseUtils.userIsNotLogged()) {
-            Intent intent = new Intent(AuthenticationActivity.this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-        }
-
-    }
 }

@@ -14,8 +14,9 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.15104166666666666" />
         <entry key="app/src/main/res/layout/activity_settings.xml" value="0.11927083333333334" />
         <entry key="app/src/main/res/layout/custom_barcode_scanner.xml" value="0.18489583333333334" />
-        <entry key="app/src/main/res/layout/fragment_business_card.xml" value="0.3597122302158273" />
+        <entry key="app/src/main/res/layout/fragment_business_card.xml" value="0.67" />
         <entry key="app/src/main/res/layout/fragment_contact_info.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/fragment_contact_list.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_contact_row.xml" value="0.2" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.22950819672131148" />
         <entry key="app/src/main/res/layout/fragment_my_business_card.xml" value="0.276268115942029" />

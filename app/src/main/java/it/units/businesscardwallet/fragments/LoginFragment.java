@@ -66,7 +66,10 @@ public class LoginFragment extends Fragment {
             }
 
             mAuth.signInWithEmailAndPassword(emailAddressContent, passwordContent)
-                    .addOnSuccessListener(authResult -> startActivity(new Intent(getContext(), MainActivity.class)))
+                    .addOnSuccessListener(authResult -> {
+                        getActivity().finish(); // TODO chekc if flag or finish
+                        startActivity(new Intent(getContext(), MainActivity.class));
+                    })
                     .addOnFailureListener(e -> {
                         emailAddress.setError("Wrong credentials");
                         password.setError("Wrong credentials");

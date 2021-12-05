@@ -52,7 +52,7 @@ public class EditAccountFragment extends PreferenceFragmentCompat {
 
         @Override
         public void afterTextChanged(Editable s) {
-            if (s.toString().trim().isEmpty() || Patterns.EMAIL_ADDRESS.matcher(s.toString()).matches()) {
+            if (s.toString().trim().isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(s.toString()).matches()) {
                 editText.setError("Value not accepted!");
                 editText.requestFocus();
             }

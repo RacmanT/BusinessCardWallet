@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.view.View;
 
 import androidx.preference.EditTextPreference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -20,21 +21,24 @@ public class EditUserFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         ((SettingsActivity) getActivity()).setActionBarTitle(getResources().getString(R.string.edit_profile));
         setPreferencesFromResource(R.xml.edit_user_fragment, rootKey);
-        //PreferenceManager.setDefaultValues(getContext(), R.xml.edit_user_fragment, false);
         EditTextPreference name = findPreference("edit_name");
         EditTextPreference lastName = findPreference("edit_last_name");
         EditTextPreference profession = findPreference("edit_profession");
         EditTextPreference phone = findPreference("edit_phone");
+        EditTextPreference institution = findPreference("edit_institution");
+        EditTextPreference address = findPreference("edit_address");
 
         name.setOnBindEditTextListener(checkTextInput);
         lastName.setOnBindEditTextListener(checkTextInput);
         profession.setOnBindEditTextListener(checkTextInput);
+        institution.setOnBindEditTextListener(checkTextInput);
         phone.setOnBindEditTextListener(editText -> editText.setInputType(InputType.TYPE_CLASS_NUMBER));
-
 
         name.setOnPreferenceChangeListener((preference, newValue) -> DatabaseUtils.userRef.update("name", newValue.toString()).isComplete());
         lastName.setOnPreferenceChangeListener((preference, newValue) ->DatabaseUtils.userRef.update("lastName", newValue.toString()).isComplete());
         profession.setOnPreferenceChangeListener((preference, newValue) -> DatabaseUtils.userRef.update("profession", newValue.toString()).isComplete());
+        institution.setOnPreferenceChangeListener((preference, newValue) -> DatabaseUtils.userRef.update("institution", newValue.toString()).isComplete());
+        address.setOnPreferenceChangeListener((preference, newValue) -> DatabaseUtils.userRef.update("address", newValue.toString()).isComplete());
         phone.setOnPreferenceChangeListener((preference, newValue) -> DatabaseUtils.userRef.update("phoneNumber", newValue.toString()).isComplete());
 
         /*{
@@ -62,6 +66,7 @@ public class EditUserFragment extends PreferenceFragmentCompat {
             }
         }
     });
+
 
 
 }

@@ -15,6 +15,7 @@ public class Contact implements Serializable {
     private String email;
     private String phoneNumber;
     private String address;
+    private String institution;
 
     public Contact() {
         this.name = "";
@@ -23,15 +24,17 @@ public class Contact implements Serializable {
         this.email = "";
         this.phoneNumber = "";
         this.address = "";
+        this.institution = "";
     }
 
-    public Contact(String name, String lastName, String profession, String email, String phoneNumber, String address) {
+    public Contact(String name, String lastName, String profession, String email, String phoneNumber, String address, String institution) {
         this.name = name;
         this.lastName = lastName;
         this.profession = profession;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.address = address;
+        this.institution = institution;
     }
 
 
@@ -84,6 +87,10 @@ public class Contact implements Serializable {
         this.address = address;
     }
 
+    public String getInstitution() {
+        return institution;
+    }
+
 
     @NonNull
     @Override
@@ -105,4 +112,6 @@ public class Contact implements Serializable {
     public int hashCode() {
         return Objects.hash(name, lastName, profession, email, phoneNumber, address);
     }
+
+
 }
