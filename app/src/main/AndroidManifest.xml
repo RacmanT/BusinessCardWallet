@@ -18,7 +18,7 @@
             android:authorities="it.units.businesscardwallet.provider"
             android:exported="false"
             android:grantUriPermissions="true">
-            <!-- ressource file to create -->
+            <!-- resource file to create -->
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths">
@@ -46,7 +46,7 @@
             android:configChanges="orientation|keyboardHidden"
             android:exported="true"
             android:hardwareAccelerated="true"
-            android:screenOrientation="portrait" /> <!-- TODO check if hardware acceleration is really needed for scan -->
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.MainActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -54,7 +54,6 @@
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait">
 
-            <!-- TODO check if hardware acceleration is really needed for scan -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

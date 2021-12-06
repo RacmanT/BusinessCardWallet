@@ -5,6 +5,7 @@
 - [Introduction](#introduction)
 - [Overview](#overview)
 - [Structure](#structure)
+- [Dependencies](#dependencies)
 
 
 ### Introduction
@@ -19,7 +20,7 @@ business card, is not that good as he thought. This simple android phone applica
 The application has the following functionalities:
 
 - [x] make an account keep you credentials secure using Firebase Authentication
-- [x] sync your data accross every device using Firebase Firestore
+- [x] sync your data across every device using Firebase Firestore
 - [x] allows you to decode others Business Card using a QR code scanner
 - [x] allows you to send you Business card as an QR code image
 - [x] allows you to read a Business card from a image containing an QR code
@@ -59,12 +60,20 @@ BusinessCardWallet
     
  ```
 
- The `AuthenticationActivity` is a container for the `Login` fragment and the `Registraton` fragment. 
-Once the user has authenticate is redirected to the `MainActivity` which will retreive the user updated data (user info and his contact list) and display them 
+ The `AuthenticationActivity` is a container for the `Login` fragment and the `Registration` fragment.
+Once the user has authenticate is redirected to the `MainActivity` which will retrieve the user updated data (user info and his contact list) and display them
 through a tab layout, consisting in an `BusinessCardFragment` and a `ContactListFragment`. 
 The QR codes is given by an AES encrypted json string, containing an user data. The `CustomScannerActivity` takes care of decrypting and 
-decoding the data, which are then used to save the user to the contacts and display his business card. Once displayed, the user can interract with the 
+decoding the data, which are then used to save the user to the contacts and display his business card. Once displayed, the user can interact with the
 contact's business card info by tapping on them (for instance it will start the phone dealer when tapping on the contact phone number).   
 The logged user can change his information (both of the account and of the business card) by using the `SettingsActivity` and its fragments.
-From here he can also change the appearence of the application, log out or delete his account. 
+From here he can also change the appearance of the application, log out or delete his account.
 
+---
+
+
+### Dependencies
+
+The application uses some external API:
+- [Zxing](https://github.com/journeyapps/zxing-android-embedded) in order to generate and scan QR codes
+- [Firebase](https://firebase.google.com/) to store users credentials and data
