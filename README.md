@@ -1,3 +1,5 @@
+<img src="/app/src/main/res/drawable/app_logo.png"  width="200" height="200"  />
+
 # BusinessCardWallet
 
 ## Table of Contents
@@ -16,6 +18,14 @@ business card, is not that good as he thought. This simple android phone applica
 ---
 
 ### Overview
+
+<div align="center" >
+<img src="/Screenshots/Home.png"  width="200" height="400" />
+
+<img src="/Screenshots/ContactList.png"  width="200" height="400"  />
+
+<img src="/Screenshots/Settings.png"   width="200" height="400" />
+</div>  
 
 The application has the following functionalities:
 
