@@ -1,6 +1,5 @@
 package it.units.businesscardwallet.fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Filter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -21,19 +19,17 @@ import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.stream.Collectors;
 
 import it.units.businesscardwallet.R;
 import it.units.businesscardwallet.activities.ContactInfoActivity;
 import it.units.businesscardwallet.entities.Contact;
 
+@SuppressWarnings("ConstantConditions")
 public class ContactList extends Fragment {
 
     private static final String ARG_PARAM_LIST = "ARG_PARAM_LIST";
     private List<Contact> contactList;
-    //private ArrayAdapter<Contact> adapter;
-    private ContactAdapter adapter2;
+    private ArrayAdapter<Contact> adapter;
     private ListView listView;
     private TextView addSomeone;
 
@@ -50,6 +46,7 @@ public class ContactList extends Fragment {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
         contactList = (ArrayList<Contact>) getArguments().getSerializable(ARG_PARAM_LIST);
@@ -70,11 +67,8 @@ public class ContactList extends Fragment {
         listView = view.findViewById(R.id.contact_list);
         addSomeone = view.findViewById(R.id.add_someone);
 
-        //adapter = new ArrayAdapter<>(getContext(), R.layout.fragment_contact_row, R.id.row_name, list);
-        adapter2 = new ContactAdapter(getContext(), contactList);
-
-        //listView.setAdapter(adapter);
-        listView.setAdapter(adapter2);
+        adapter = new ArrayAdapter<>(getContext(), R.layout.fragment_contact_row, R.id.row_name, contactList);
+        listView.setAdapter(adapter);
 
         listView.setOnItemClickListener((parent, view1, position, id) -> {
                     Intent intent = new Intent(getActivity(), ContactInfoActivity.class);
@@ -109,21 +103,16 @@ public class ContactList extends Fragment {
 
         @Override
         public boolean onQueryTextChange(String newText) {
-            /*if(adapter != null){
+            if(adapter != null){
                 adapter.getFilter().filter(newText);
-            }*/
-
-            if (adapter2 != null) {
-                adapter2.getFilter().filter(newText);
             }
-
             return false;
         }
     };
 
 
-
-   private class ContactAdapter extends ArrayAdapter<Contact> {
+// use this Adapter if row in list has more then one TextView
+/*   private class ContactAdapter extends ArrayAdapter<Contact> {
 
         private final List<Contact> contacts;
         private List<Contact> filteredContacts;
@@ -168,12 +157,12 @@ public class ContactList extends Fragment {
                     results.values = contacts;
                     results.count = contacts.size();
                 } else {
-                    final List<Contact> nlist = contacts.stream().filter(contact ->
+                    final List<Contact> tempList = contacts.stream().filter(contact ->
                             contact.getName().toLowerCase(Locale.ROOT).startsWith(prefix))
                             .collect(Collectors.toList());
 
-                    results.values = nlist;
-                    results.count = nlist.size();
+                    results.values = tempList;
+                    results.count = tempList.size();
                 }
                 return results;
             }
@@ -193,7 +182,7 @@ public class ContactList extends Fragment {
 
 
         }
-    }
+    }*/
 
 }
 

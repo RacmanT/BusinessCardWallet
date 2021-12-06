@@ -1,5 +1,6 @@
 package it.units.businesscardwallet.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -9,6 +10,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
 
 import it.units.businesscardwallet.R;
+import it.units.businesscardwallet.activities.AuthenticationActivity;
 import it.units.businesscardwallet.utils.DatabaseUtils;
 
 @SuppressWarnings("ConstantConditions")
@@ -17,8 +19,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
-        // TODO or this or app:fragment in xml
-        //findPreference("edit_business_card").setFragment("it.units.businesscardwallet.fragments.EditUserFragment");
 
         SwitchPreferenceCompat switchDarkTheme = findPreference("enable_dark_theme");
         switchDarkTheme.setOnPreferenceClickListener((preference) -> {
@@ -29,6 +29,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
             return false;
         });
+
 
         Preference delete = findPreference("delete_account");
         delete.setOnPreferenceClickListener(preference -> {
@@ -49,13 +50,14 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     private void showDeleteAlert() {
         new AlertDialog.Builder(getContext())
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setTitle("Delete account")
-                .setMessage("Are you sure you want to close delete this account ?")
-                .setPositiveButton("Yes", (dialog, which) -> {
+                .setTitle(getResources().getString(R.string.delete))
+                .setMessage(getResources().getString(R.string.confirm_delete))
+                .setPositiveButton(getResources().getString(R.string.yes), (dialog, which) -> {
                     DatabaseUtils.deleteAccount();
-                    getActivity().onBackPressed();
+                    getActivity().finish();
+                    startActivity(new Intent(getActivity(),AuthenticationActivity.class));
                 })
-                .setNegativeButton("No", null)
+                .setNegativeButton(getResources().getString(R.string.no), null)
                 .show();
     }
 

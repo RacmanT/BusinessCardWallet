@@ -21,6 +21,6 @@
         android:background="@null"
         android:layout_alignParentTop="true"
         android:src="@drawable/ic_baseline_flash_off_24"
-        android:contentDescription="Flash button"/>
+        android:contentDescription="@string/flash_button_description"/>
 
 </RelativeLayout>

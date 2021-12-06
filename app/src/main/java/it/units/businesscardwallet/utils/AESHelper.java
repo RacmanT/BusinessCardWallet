@@ -1,6 +1,8 @@
 package it.units.businesscardwallet.utils;
 
 
+import android.annotation.SuppressLint;
+
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
@@ -14,14 +16,13 @@ import javax.crypto.spec.SecretKeySpec;
 
 import it.units.businesscardwallet.BuildConfig;
 
-
 // https://stackoverflow.com/questions/5355466/converting-secret-key-into-a-string-and-vice-versa
 // https://www.apriorit.com/dev-blog/612-mobile-cybersecurity-encryption-in-android
 
 // Encryption Library https://stackoverflow.com/questions/5220761/fast-and-simple-string-encrypt-decrypt-in-java
-
 // Cipher https://developer.android.com/reference/javax/crypto/Cipher
 
+@SuppressLint("GetInstance")
 public abstract class AESHelper {
 
     private static final String ALGORITHM = "AES";

@@ -20,7 +20,6 @@ public abstract class DatabaseUtils {
     public static CollectionReference contactsRef;
 
     public static void init() {
-        Log.i("TEST", !userIsNotLogged()+"");
         if (!userIsNotLogged()) {
             userRef = DATABASE.collection("users").document(AUTH.getCurrentUser().getUid());
             contactsRef = userRef.collection("contacts");
@@ -41,9 +40,17 @@ public abstract class DatabaseUtils {
 
 
     public static void deleteAccount(){
-        AUTH.signOut();
-        //AUTH.getCurrentUser().delete().isComplete();
+        //AUTH.signOut();
+        AUTH.getCurrentUser().delete().isComplete();
+        userRef.delete().isComplete();
 
     }
 
+    public static FirebaseAuth getAUTH() {
+        return AUTH;
+    }
+
+    public static FirebaseFirestore getDATABASE() {
+        return DATABASE;
+    }
 }

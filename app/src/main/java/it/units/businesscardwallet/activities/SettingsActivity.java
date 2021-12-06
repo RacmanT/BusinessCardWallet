@@ -1,10 +1,8 @@
 package it.units.businesscardwallet.activities;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,9 +10,6 @@ import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
-
-import java.util.Locale;
-import java.util.Map;
 
 import it.units.businesscardwallet.R;
 import it.units.businesscardwallet.entities.Contact;
@@ -52,21 +47,18 @@ public class SettingsActivity extends AppCompatActivity implements PreferenceFra
 
     @Override
     public boolean onPreferenceStartFragment(PreferenceFragmentCompat caller, Preference pref) {
-        // Instantiate the new Fragment
         final Bundle args = pref.getExtras();
         final Fragment fragment = getSupportFragmentManager().getFragmentFactory().instantiate(
                 getClassLoader(),
                 pref.getFragment());
         fragment.setArguments(args);
-        //fragment.setTargetFragment(caller, 0); // on official documentation even if it's deprecated
-        // Replace the existing Fragment with the new Fragment
+
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.settings, fragment)
                 .addToBackStack(null)
                 .commit();
         return true;
     }
-
 
     public void setActionBarTitle(String title) {
         getSupportActionBar().setTitle(title);
@@ -81,11 +73,6 @@ public class SettingsActivity extends AppCompatActivity implements PreferenceFra
         prefs.edit().putString("edit_address", contact.getAddress()).apply();
         prefs.edit().putString("edit_phone", contact.getPhoneNumber()).apply();
         prefs.edit().putString("edit_email", contact.getEmail()).apply();
-        // TODO language and theme
-        if(Locale.getDefault().getLanguage().equals(new Locale("sl").getLanguage()) ||
-           Locale.getDefault().getLanguage().equals(new Locale("it").getLanguage())){
-           prefs.edit().putString("edit_language", Locale.getDefault().getLanguage()).apply();
-        }
         prefs.edit().putBoolean("enable_dark_theme", isDarkMode()).apply();
 
     }

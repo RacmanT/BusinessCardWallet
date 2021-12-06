@@ -20,6 +20,7 @@ import java.util.Arrays;
 import it.units.businesscardwallet.R;
 import it.units.businesscardwallet.activities.MainActivity;
 import it.units.businesscardwallet.entities.Contact;
+import it.units.businesscardwallet.utils.DatabaseUtils;
 
 
 public class RegistrationFragment extends Fragment {
@@ -28,8 +29,6 @@ public class RegistrationFragment extends Fragment {
     EditText name, lastName, profession, address, institution, emailAddress, password, confirmPassword, phone;
     private TextView logInHint;
     private Button registerButton;
-    private FirebaseAuth mAuth;
-    FirebaseFirestore db;
     Contact newUser;
 
 
@@ -40,8 +39,6 @@ public class RegistrationFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -89,7 +86,7 @@ public class RegistrationFragment extends Fragment {
                 return;
             }
 
-            if (profession.getText().toString().length() != 0 && !profession.getText().toString().matches("[a-zA-Z]+")) {
+            if (profession.getText().toString().length() != 0 && !profession.getText().toString().matches("[a-zA-Z ]+")) {
                 profession.setError("Profession not valid");
                 return;
             }
@@ -116,12 +113,14 @@ public class RegistrationFragment extends Fragment {
             }
 
             newUser = new Contact(name.getText().toString(), lastName.getText().toString(), profession.getText().toString(), emailAddress.getText().toString(),
-                                    phone.getText().toString(), address.getText().toString(), institution.getText().toString());
+                    phone.getText().toString(), address.getText().toString(), institution.getText().toString());
 
-            mAuth.createUserWithEmailAndPassword(emailAddress.getText().toString(), password.getText().toString())
+            DatabaseUtils.getAUTH().createUserWithEmailAndPassword(emailAddress.getText().toString(), password.getText().toString())
                     .addOnSuccessListener(authResult ->
                             {
-                                db.collection("users").document(mAuth.getCurrentUser().getUid()).set(newUser);
+                                DatabaseUtils.getDATABASE().collection("users")
+                                        .document(DatabaseUtils.getAUTH().getCurrentUser().getUid())
+                                        .set(newUser);
                                 startActivity(new Intent(getContext(), MainActivity.class));
                             }
                     );

@@ -149,7 +149,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:contentDescription="Institution icon"
+        android:contentDescription="@string/institution_icon_description"
         android:src="@drawable/ic_baseline_business_24"
         app:layout_constraintBottom_toBottomOf="@+id/institution"
         app:layout_constraintStart_toStartOf="parent"

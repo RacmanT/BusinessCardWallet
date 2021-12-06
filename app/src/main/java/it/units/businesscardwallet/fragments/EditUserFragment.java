@@ -4,11 +4,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.view.View;
 
 import androidx.preference.EditTextPreference;
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceManager;
 
 import it.units.businesscardwallet.R;
 import it.units.businesscardwallet.activities.SettingsActivity;
@@ -41,12 +39,6 @@ public class EditUserFragment extends PreferenceFragmentCompat {
         address.setOnPreferenceChangeListener((preference, newValue) -> DatabaseUtils.userRef.update("address", newValue.toString()).isComplete());
         phone.setOnPreferenceChangeListener((preference, newValue) -> DatabaseUtils.userRef.update("phoneNumber", newValue.toString()).isComplete());
 
-        /*{
-            DatabaseUtils.userRef.update("lastName", newValue.toString()).isComplete();
-            preference.notifyDependencyChange(true);
-            return true;
-        }*/
-
     }
 
     private final EditTextPreference.OnBindEditTextListener checkTextInput = editText -> editText.addTextChangedListener(new TextWatcher() {
@@ -66,7 +58,6 @@ public class EditUserFragment extends PreferenceFragmentCompat {
             }
         }
     });
-
 
 
 }

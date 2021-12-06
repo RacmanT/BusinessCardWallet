@@ -32,7 +32,7 @@
             app:dialogTitle="@string/edit_institution"
             app:key="edit_institution"
             app:persistent="true"
-            app:title="@string/insitution" />
+            app:title="@string/institution" />
 
         <EditTextPreference
             android:digits="0123456789"

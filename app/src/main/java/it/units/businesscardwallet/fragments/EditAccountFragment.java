@@ -8,10 +8,6 @@ import android.util.Patterns;
 import androidx.preference.EditTextPreference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-
 import it.units.businesscardwallet.R;
 import it.units.businesscardwallet.activities.SettingsActivity;
 import it.units.businesscardwallet.utils.DatabaseUtils;

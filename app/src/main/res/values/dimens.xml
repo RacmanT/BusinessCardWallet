@@ -2,5 +2,4 @@
 <resources>
     <dimen name="qr_code_width">250dp</dimen>
     <dimen name="qr_code_height">250dp</dimen>
-
 </resources>

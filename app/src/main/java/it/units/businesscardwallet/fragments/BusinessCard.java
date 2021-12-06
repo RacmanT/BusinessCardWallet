@@ -33,6 +33,7 @@ import it.units.businesscardwallet.entities.Contact;
 import it.units.businesscardwallet.utils.AESHelper;
 
 @SuppressWarnings("ConstantConditions")
+@SuppressLint("NonConstantResourceId")
 public class BusinessCard extends Fragment {
 
     private static final String ARG_PARAM_CONTACT = "ARG_PARAM_CONTACT";
@@ -59,16 +60,14 @@ public class BusinessCard extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true); // TODO if you want fragment to have menu
-        // https://stackoverflow.com/questions/8308695/how-to-add-options-menu-to-fragment-in-android
-        contact = (Contact) getArguments().getSerializable(ARG_PARAM_CONTACT); //https://stackoverflow.com/questions/17443081/fragment-initialization-with-complex-object
+        setHasOptionsMenu(true);
+        contact = (Contact) getArguments().getSerializable(ARG_PARAM_CONTACT);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // TODO https://stackoverflow.com/questions/25279715/android-how-to-add-icon-at-the-left-side-of-the-textview/25279726
         view = inflater.inflate(R.layout.fragment_business_card, container, false);
 
         name = view.findViewById(R.id.first_name);
@@ -88,7 +87,7 @@ public class BusinessCard extends Fragment {
 
             int width = (int) getResources().getDimension(R.dimen.qr_code_width);
             int height = (int) getResources().getDimension(R.dimen.qr_code_height);
-            bitmap = barcodeEncoder.encodeBitmap(encryptedJson, BarcodeFormat.QR_CODE, width, height); // 300, 300
+            bitmap = barcodeEncoder.encodeBitmap(encryptedJson, BarcodeFormat.QR_CODE, width, height);
             ImageView qrCode = view.findViewById(R.id.qr_code);
             qrCode.setImageBitmap(bitmap);
 
@@ -104,7 +103,7 @@ public class BusinessCard extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    @SuppressLint("NonConstantResourceId")
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -141,7 +140,6 @@ public class BusinessCard extends Fragment {
     }
 
     // https://developer.android.com/training/printing/photos
-
     private void printQrCode() {
         PrintHelper photoPrinter = new PrintHelper(getActivity()); //requireActivity()
         photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
@@ -150,7 +148,6 @@ public class BusinessCard extends Fragment {
 
 
     private void initLayout() {
-
         name.setText(contact.getName());
         lastName.setText(contact.getLastName());
         profession.setText(contact.getProfession());
@@ -185,7 +182,6 @@ public class BusinessCard extends Fragment {
         }
 
         // https://developer.android.com/guide/components/intents-common
-
         address.setOnClickListener(v -> {
             Uri gmmIntentUri = Uri.parse("geo:0,0?q="+address.getText().toString());
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
@@ -207,6 +203,5 @@ public class BusinessCard extends Fragment {
         });
 
     }
-
 
 }

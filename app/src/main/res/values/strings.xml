@@ -1,10 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">Business Card Wallet</string>
 
-    <!--    TODO https://guides.codepath.com/android/Storing-Secret-Keys-in-Android-->
-    <!--    <string name="private_key">NntH+3XMYQJdlU8eo+lkbeBAskuCw6qdvhOkR10xP2U=</string>-->
-
-
     <string name="address">Address</string>
     <string name="qr_description">QR Code associated with the user\'s business card</string>
     <string name="home">Home</string>
@@ -40,7 +36,7 @@
     <string name="edit_profession">Edit profession</string>
     <string name="profession">Profession</string>
     <string name="profession_mandatory">Profession*</string>
-    <string name="appearence">Appearance</string>
+    <string name="appearance">Appearance</string>
     <string name="about_us">About us</string>
     <string name="language">Language</string>
     <string name="version">Version</string>
@@ -69,6 +65,10 @@
     <string name="please_add_someone">Please add someone</string>
     <string name="edit_address">Edit address</string>
     <string name="edit_institution">Edit institution</string>
-    <string name="insitution">Institution</string>
-    <string name="add_from_image">Add from image</string>
+    <string name="add_from_image">Import</string>
+    <string name="confirm_delete">Are you sure you want to close delete this account ?</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
+    <string name="flash_button_description">Flash button</string>
+    <string name="institution_icon_description">Institution icon</string>
 </resources>

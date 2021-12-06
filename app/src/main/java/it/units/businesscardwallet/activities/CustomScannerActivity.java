@@ -42,7 +42,6 @@ public class CustomScannerActivity extends Activity implements
             switchFlashlightButton.setVisibility(View.GONE);
         }
 
-
         capture = new CaptureManager(this, barcodeScannerView);
         capture.initializeFromIntent(getIntent(), savedInstanceState);
         capture.setShowMissingCameraPermissionDialog(false);

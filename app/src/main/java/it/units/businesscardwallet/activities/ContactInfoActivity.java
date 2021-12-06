@@ -12,11 +12,12 @@ import it.units.businesscardwallet.entities.Contact;
 import it.units.businesscardwallet.fragments.BusinessCard;
 import it.units.businesscardwallet.utils.DatabaseUtils;
 
+@SuppressWarnings("ConstantConditions")
+@SuppressLint("NonConstantResourceId")
 public class ContactInfoActivity extends AppCompatActivity {
 
     private Contact contact;
 
-    @SuppressWarnings("ConstantConditions")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +32,6 @@ public class ContactInfoActivity extends AppCompatActivity {
 
     }
 
-    @SuppressLint("NonConstantResourceId")
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {

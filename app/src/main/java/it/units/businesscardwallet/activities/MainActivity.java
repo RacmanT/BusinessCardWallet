@@ -7,14 +7,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -31,16 +28,11 @@ import com.google.zxing.BinaryBitmap;
 import com.google.zxing.LuminanceSource;
 import com.google.zxing.MultiFormatReader;
 import com.google.zxing.RGBLuminanceSource;
-import com.google.zxing.Reader;
-import com.google.zxing.Result;
 import com.google.zxing.client.android.Intents;
 import com.google.zxing.common.HybridBinarizer;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 import it.units.businesscardwallet.R;
@@ -77,8 +69,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-    // previously onResume() moved to onStart() https://stackoverflow.com/questions/14375720/android-destroying-activities-killing-processes
     @Override
     protected void onStart() {
         super.onStart();
@@ -92,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
 
         DatabaseUtils.userRef.get().addOnSuccessListener(documentSnapshot -> {
             myContact = documentSnapshot.toObject(Contact.class);
-            Log.i("TEST", myContact.toString());
             if (adapter != null) {
                 adapter.notifyDataSetChanged();
             }
@@ -120,12 +109,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_add:
-                ScanOptions options = new ScanOptions();
-                options.setCaptureActivity(CustomScannerActivity.class)
-                        .setDesiredBarcodeFormats(ScanOptions.QR_CODE)
-                        .setOrientationLocked(false)
-                        .setBeepEnabled(false);
-                barcodeLauncher.launch(options);
+                scanQrCode();
                 return true;
             case R.id.action_settings:
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
@@ -141,6 +125,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    private void scanQrCode(){
+        ScanOptions options = new ScanOptions();
+        options.setCaptureActivity(CustomScannerActivity.class)
+                .setDesiredBarcodeFormats(ScanOptions.QR_CODE)
+                .setOrientationLocked(false)
+                .setBeepEnabled(false);
+        barcodeLauncher.launch(options);
+    }
+
     private final ActivityResultLauncher<ScanOptions> barcodeLauncher = registerForActivityResult(new ScanContract(),
             result -> {
                 if (result.getContents() == null) {
@@ -153,7 +147,6 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Cancelled due to missing camera permission", Toast.LENGTH_LONG).show();
                     }
                 } else {
-
                     try {
                         String decryptedData = AESHelper.decrypt(result.getContents());
                         Log.i("KEY", "decryptedData is    " + decryptedData);
@@ -168,29 +161,26 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-    // TODO add https://stackoverflow.com/questions/32134072/qr-code-scan-from-image-file
 
 
     private void importFromFile() {
-
+        // https://stackoverflow.com/questions/32134072/qr-code-scan-from-image-file
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("image/*");
         startForResultFromGallery.launch(intent);
-
     }
 
-    private final ActivityResultLauncher startForResultFromGallery = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+    private final ActivityResultLauncher<Intent> startForResultFromGallery = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == Activity.RESULT_OK){
             try {
                 if (result.getData() != null){
                     Uri selectedImageUri = result.getData().getData();
-                    Bitmap bmap = BitmapFactory.decodeStream(getBaseContext().getContentResolver().openInputStream(selectedImageUri));
+                    Bitmap bMap = BitmapFactory.decodeStream(getBaseContext().getContentResolver().openInputStream(selectedImageUri));
+                    int[] intArray = new int[bMap.getWidth() * bMap.getHeight()];
+                    bMap.getPixels(intArray, 0, bMap.getWidth(), 0, 0, bMap.getWidth(), bMap.getHeight());
 
-                    int[] intArray = new int[bmap.getWidth() * bmap.getHeight()];
-                    bmap.getPixels(intArray, 0, bmap.getWidth(), 0, 0, bmap.getWidth(), bmap.getHeight());
-
-                    LuminanceSource source = new RGBLuminanceSource(bmap.getWidth(), bmap.getHeight(), intArray);
+                    LuminanceSource source = new RGBLuminanceSource(bMap.getWidth(), bMap.getHeight(), intArray);
                     BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
                     try {
                         String contents = new MultiFormatReader().decode(bitmap).getText();

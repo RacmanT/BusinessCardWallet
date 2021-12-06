@@ -103,7 +103,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/editTextName"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/editTextName"
@@ -118,7 +119,8 @@
         app:layout_constraintEnd_toStartOf="@+id/editTextLastName"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/editTextPhone"
@@ -133,7 +135,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextInstitution" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextInstitution"
+        android:importantForAutofill="no" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier2"
@@ -155,7 +158,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextLastName" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextLastName"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/editTextInstitution"
@@ -170,7 +174,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAddress" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextAddress"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/editTextAddress"
@@ -185,7 +190,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.442"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextProfession" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextProfession"
+        android:importantForAutofill="no" />
 
     <TextView
         android:id="@+id/textView"
