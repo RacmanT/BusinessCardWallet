@@ -12,8 +12,8 @@
 
 ### Introduction
 
-Think how easier would have been for the poor Patrick Bateman, the American Psycho, when he [found out](https://www.youtube.com/watch?v=cISYzA36-ZY) that his
-business card, is not that good as he thought. This simple android phone application aims to solve this problem, by providing a business card wallet.
+Think how shameful was for the poor Patrick Bateman, the American Psycho, when he [found out](https://www.youtube.com/watch?v=cISYzA36-ZY) that his
+business card, is not that good as he thought. This simple android phone application aims to avoid these situations, by providing a digital business card wallet.
 
 ---
 
@@ -29,7 +29,7 @@ business card, is not that good as he thought. This simple android phone applica
 
 The application has the following functionalities:
 
-- [x] make an account keep you credentials secure using Firebase Authentication
+- [x] make an account and keep your credentials secure using Firebase Authentication
 - [x] sync your data across every device using Firebase Firestore
 - [x] allows you to decode others Business Card using a QR code scanner
 - [x] allows you to send you Business card as an QR code image
@@ -70,7 +70,7 @@ BusinessCardWallet
     
  ```
 
- The `AuthenticationActivity` is a container for the `Login` fragment and the `Registration` fragment.
+The `AuthenticationActivity` is a container for the `Login` fragment and the `Registration` fragment.
 Once the user has authenticate is redirected to the `MainActivity` which will retrieve the user updated data (user info and his contact list) and display them
 through a tab layout, consisting in an `BusinessCardFragment` and a `ContactListFragment`. 
 The QR codes is given by an AES encrypted json string, containing an user data. The `CustomScannerActivity` takes care of decrypting and 
