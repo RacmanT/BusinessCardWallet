@@ -13,7 +13,7 @@
 ### Introduction
 
 Think how shameful was for the poor Patrick Bateman, the American Psycho, when he [found out](https://www.youtube.com/watch?v=cISYzA36-ZY) that his
-business card, is not that good as he thought. This simple android phone application aims to avoid these situations, by providing a digital business card wallet.
+business card, was not that good as he thought. This simple android phone application aims to avoid these situations, by providing a digital business card wallet.
 
 ---
 
